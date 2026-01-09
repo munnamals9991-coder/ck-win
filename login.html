@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* স্টাইল signup.html এর মতোই হবে */
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f5f5f5; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 450px; background: white; min-height: 100vh; }
+        .header { background: linear-gradient(180deg, #ffcc00 0%, #ffb300 100%); padding: 30px 20px; color: white; border-radius: 0 0 25px 25px; }
+        .header h1 { margin: 0; font-size: 28px; font-style: italic; font-weight: 900; }
+        .form-box { padding: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .label { display: block; margin-bottom: 5px; font-weight: bold; color: #444; }
+        .input-field { display: flex; align-items: center; background: #f9f9f9; border: 1px solid #ddd; border-radius: 12px; padding: 12px; }
+        .input-field i { color: #ffb300; margin-right: 10px; }
+        input { border: none; background: transparent; width: 100%; outline: none; font-size: 16px; }
+        .btn-action { width: 100%; padding: 15px; border-radius: 30px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; background: #ffb300; color: white; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header"><h1>CK WIN</h1><p>Login with your @gmail.com</p></div>
+    <div class="form-box">
+        <div class="input-group">
+            <span class="label">Email</span>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="l_email" placeholder="example@gmail.com"></div>
+        </div>
+        <div class="input-group">
+            <span class="label">Password</span>
+            <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="l_pass" placeholder="Password">
+                <i class="fas fa-eye" id="toggleLPass" style="color:#ccc; cursor:pointer;"></i>
+            </div>
+        </div>
+        <button class="btn-action" onclick="login()">Log in</button>
+        <p style="text-align:center">New here? <a href="signup.html" style="color:#ffb300">Register</a></p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW SVF79s5YlRfkLw",
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+    const app = initializeApp(firebaseConfig);
+    const dbRef = ref(getDatabase(app));
+
+    document.getElementById('toggleLPass').onclick = function() {
+        const p = document.getElementById('l_pass');
+        p.type = p.type === "password" ? "text" : "password";
+    };
+
+    window.login = function() {
+        const email = document.getElementById('l_email').value;
+        const pass = document.getElementById('l_pass').value;
+        const userId = email.replace(/[^a-zA-Z0-9]/g, "");
+
+        get(child(dbRef, `users/${userId}`)).then((sn) => {
+            if(sn.exists() && sn.val().password === pass) {
+                localStorage.setItem("userKey", userId);
+                window.location.href="index.html";
+            } else { alert("ভুল ইমেইল বা পাসওয়ার্ড!"); }
+        });
+    }
+</script>
+</body>
+</html>
