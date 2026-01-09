@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>CK WIN - Admin Panel</title>
+    <style>
+        body { background: #0f172a; color: white; font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #334155; padding: 12px; text-align: left; }
+        th { background: #1e293b; color: #6366f1; }
+        input { padding: 5px; border-radius: 5px; border: none; width: 80px; }
+        button { cursor: pointer; background: #2ecc71; border: none; padding: 5px 10px; border-radius: 5px; color: white; }
+    </style>
+</head>
+<body>
+    <h1>CK WIN - অ্যাডমিন প্যানেল</h1>
+    <div id="userList">
+        <table>
+            <thead>
+                <tr>
+                    <th>ফোন নম্বর</th>
+                    <th>বর্তমান ব্যালেন্স</th>
+                    <th>নতুন ব্যালেন্স দিন</th>
+                    <th>অ্যাকশন</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // আপনার সেই একই চাবি (Config) এখানেও বসান
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW SVF79s5YlRfkLw",
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // সব ইউজারের ডাটাবেস থেকে তথ্য আনা
+    onValue(ref(db, 'users'), (snapshot) => {
+        const data = snapshot.val();
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+
+        for (let phone in data) {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${phone}</td>
+                    <td>৳ ${data[phone].balance}</td>
+                    <td><input type="number" id="input-${phone}" placeholder="টাকা"></td>
+                    <td><button onclick="updateBalance('${phone}')">Add Money</button></td>
+                </tr>
+            `;
+        }
+    });
+
+    // ব্যালেন্স আপডেট করার ফাংশন
+    window.updateBalance = function(phone) {
+        const amount = document.getElementById('input-'+phone).value;
+        if(amount) {
+            update(ref(db, 'users/' + phone), {
+                balance: parseFloat(amount)
+            }).then(() => alert("ব্যালেন্স আপডেট হয়েছে!"));
+        }
+    }
+</script>
+</body>
+</html>
