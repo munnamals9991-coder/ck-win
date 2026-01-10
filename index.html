@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f8f9fd; padding-bottom: 80px; overflow-x: hidden; }
+
+        /* Header */
+        .header { background: #fff; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 900; color: #ff4757; font-style: italic; }
+        .header-icons i { font-size: 20px; color: #ffae00; margin-left: 15px; }
+
+        /* Banner */
+        .banner { margin: 15px; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .banner img { width: 100%; display: block; }
+
+        /* Marquee News */
+        .news-bar { background: #fff; margin: 0 15px; padding: 10px; border-radius: 50px; display: flex; align-items: center; font-size: 12px; gap: 10px; }
+        .news-bar i { color: #ff4757; }
+
+        /* Game Categories */
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 15px; }
+        .game-card { background: #fff; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .game-card img { width: 100%; border-radius: 10px; margin-bottom: 8px; }
+        .game-card span { font-size: 12px; font-weight: bold; }
+
+        /* Floating Robot (Draggable) */
+        #robot-cs {
+            position: fixed; 
+            top: 70%; 
+            right: 20px; 
+            z-index: 9999; 
+            cursor: move; 
+            touch-action: none;
+            user-select: none;
+        }
+        .robot-circle {
+            background: #fff; 
+            border-radius: 50%; 
+            width: 65px; 
+            height: 65px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25); 
+            border: 3px solid #FFD700;
+        }
+        .robot-circle img { width: 45px; height: 45px; pointer-events: none; }
+        .online-dot { position: absolute; bottom: 5px; right: 5px; width: 12px; height: 12px; background: #2ecc71; border-radius: 50%; border: 2px solid #fff; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
+        .nav-item { text-align: center; color: #bbb; text-decoration: none; font-size: 11px; flex: 1; }
+        .nav-item i { font-size: 22px; display: block; margin-bottom: 3px; }
+        .nav-item.active { color: #FF4757; }
+        .promo-mid { margin-top: -35px; }
+        .promo-mid div { width: 55px; height: 55px; background: #FF4757; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; border: 5px solid #f8f9fd; font-size: 22px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">HGNICE</div>
+        <div class="header-icons">
+            <i class="fas fa-envelope"></i>
+            <i class="fas fa-download"></i>
+        </div>
+    </div>
+
+    <div class="banner">
+        <img src="https://i.ibb.co/vYm6vXq/banner.jpg" alt="Promotion Banner" onerror="this.src='https://via.placeholder.com/400x200?text=Premium+Banner'">
+    </div>
+
+    <div class="news-bar">
+        <i class="fas fa-bullhorn"></i>
+        <marquee>Attention!!! Welcome to CK WIN. Best online entertainment platform...</marquee>
+    </div>
+
+    <div class="game-grid">
+        <div class="game-card">
+            <img src="https://api.dicebear.com/7.x/icons/svg?seed=trophy" alt="Popular">
+            <span>Popular</span>
+        </div>
+        <div class="game-card">
+            <img src="https://api.dicebear.com/7.x/icons/svg?seed=ball" alt="Lottery">
+            <span>Lottery</span>
+        </div>
+        <div class="game-card">
+            <img src="https://api.dicebear.com/7.x/icons/svg?seed=slot" alt="Slots">
+            <span>Slots</span>
+        </div>
+    </div>
+
+    <div id="robot-cs">
+        <a href="support.html" id="cs-link" style="text-decoration: none;">
+            <div class="robot-circle">
+                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="CS Robot">
+                <div class="online-dot"></div>
+            </div>
+        </a>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item active"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-item"><i class="fas fa-gift"></i>Activity</a>
+        <a href="promotion.html" class="nav-item promo-mid"><div><i class="fas fa-gem"></i></div>Promotion</a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-item"><i class="fas fa-user-circle"></i>Account</a>
+    </div>
+
+    <script>
+        // Draggable Logic for Robot
+        const robot = document.getElementById("robot-cs");
+        const link = document.getElementById("cs-link");
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+
+        // Mobile Touch Events
+        robot.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            const touch = e.touches[0];
+            startX = touch.clientX - robot.offsetLeft;
+            startY = touch.clientY - robot.offsetTop;
+            initialX = touch.clientX;
+            initialY = touch.clientY;
+        });
+
+        document.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            let x = touch.clientX - startX;
+            let y = touch.clientY - startY;
+
+            // Boundary Check
+            x = Math.max(0, Math.min(x, window.innerWidth - 70));
+            y = Math.max(0, Math.min(y, window.innerHeight - 100));
+
+            robot.style.left = x + "px";
+            robot.style.top = y + "px";
+            robot.style.right = "auto";
+        }, { passive: false });
+
+        document.addEventListener("touchend", (e) => {
+            const touch = e.changedTouches[0];
+            const dist = Math.sqrt(Math.pow(touch.clientX - initialX, 2) + Math.pow(touch.clientY - initialY, 2));
+            
+            // ড্র্যাগ করলে লিঙ্ক কাজ করবে না, শুধু ট্যাপ করলে করবে
+            if (dist > 10) {
+                link.onclick = (ev) => ev.preventDefault();
+            } else {
+                link.onclick = null;
+            }
+            isDragging = false;
+        });
+
+        // PC Mouse Events (Optional)
+        robot.onmousedown = (e) => {
+            isDragging = true;
+            startX = e.clientX - robot.offsetLeft;
+            startY = e.clientY - robot.offsetTop;
+        };
+        document.onmousemove = (e) => {
+            if (!isDragging) return;
+            robot.style.left = (e.clientX - startX) + "px";
+            robot.style.top = (e.clientY - startY) + "px";
+            robot.style.right = "auto";
+        };
+        document.onmouseup = () => isDragging = false;
+    </script>
+</body>
+</html>
