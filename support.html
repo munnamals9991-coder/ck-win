@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Support & Rules</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f7f9fc; color: #333; }
+
+        /* হেডার */
+        .header { background: #FFD700; padding: 15px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .back-btn { font-size: 20px; color: #000; cursor: pointer; margin-right: 15px; text-decoration: none; }
+        .header-title { font-size: 18px; font-weight: bold; color: #000; flex-grow: 1; text-align: center; margin-right: 35px; }
+
+        /* ব্যানার */
+        .banner { background: #FFD700; padding: 40px 20px; text-align: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
+        .banner-logo { font-size: 42px; font-weight: 900; font-style: italic; color: #000; margin-bottom: 5px; }
+        .banner-text { font-size: 14px; color: #000; opacity: 0.8; font-weight: 600; }
+
+        /* কন্টেইনার */
+        .support-container { padding: 20px; margin-top: -25px; }
+        .section-label { font-size: 13px; font-weight: bold; color: #888; margin: 15px 0 10px 5px; text-transform: uppercase; }
+
+        /* কার্ড ডিজাইন */
+        .support-card {
+            background: white; border-radius: 18px; padding: 18px; display: flex; align-items: center;
+            gap: 15px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit; border: 1px solid #f0f0f0;
+        }
+        .support-card:active { transform: scale(0.97); background-color: #fffdf0; }
+
+        .icon-box {
+            width: 50px; height: 50px; background: #FFD700; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-size: 22px; color: #000;
+        }
+        .icon-tg { background: #0088cc; color: white; }
+        .icon-rules { background: #ff4757; color: white; }
+        .icon-gift { background: #2ed573; color: white; }
+
+        .content-box { flex-grow: 1; }
+        .content-box h3 { font-size: 16px; margin-bottom: 3px; color: #111; font-weight: 700; }
+        .content-box p { font-size: 12px; color: #777; line-height: 1.4; }
+        .arrow-right { color: #ccc; font-size: 14px; }
+
+        /* পপ-আপ (Rules Modal) */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-content {
+            background: white; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px;
+            max-height: 80vh; overflow-y: auto; position: relative;
+        }
+        .modal-header { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #ff4757; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .rule-item { margin-bottom: 15px; font-size: 14px; line-height: 1.6; color: #444; }
+        .rule-item b { color: #000; display: block; margin-bottom: 4px; }
+        .close-modal {
+            background: #000; color: #FFD700; width: 100%; padding: 12px; border: none;
+            border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer;
+        }
+
+        .bottom-action { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 10; }
+        .btn-live-chat {
+            background: #000; color: #FFD700; width: 100%; padding: 16px; border-radius: 50px;
+            text-align: center; font-weight: bold; font-size: 16px; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="login.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="header-title">Customer Service</div>
+    </div>
+
+    <div class="banner">
+        <div class="banner-logo">CK WIN</div>
+        <p class="banner-text">Professional Gaming Support Center</p>
+    </div>
+
+    <div class="support-container">
+        
+        <div class="section-label">Official Support</div>
+        <a href="https://t.me/ckwinsupport99_bot" target="_blank" class="support-card">
+            <div class="icon-box icon-tg"><i class="fab fa-telegram-plane"></i></div>
+            <div class="content-box">
+                <h3>Telegram Support</h3>
+                <p>Contact our official bot @ckwinsupport99_bot</p>
+            </div>
+            <i class="fas fa-chevron-right arrow-right"></i>
+        </a>
+
+        <div class="section-label">Rewards & Rules</div>
+
+        <a href="#" class="support-card" onclick="alert('Join our Telegram channel for daily Gift Codes!')">
+            <div class="icon-box icon-gift"><i class="fas fa-gift"></i></div>
+            <div class="content-box">
+                <h3>Redeem Gift Code</h3>
+                <p>Enter your code and get instant bonus.</p>
+            </div>
+            <i class="fas fa-chevron-right arrow-right"></i>
+        </a>
+
+        <a href="#" class="support-card" onclick="openRules()">
+            <div class="icon-box icon-rules"><i class="fas fa-gavel"></i></div>
+            <div class="content-box">
+                <h3>Game Rules & Policy</h3>
+                <p>Avoid account ban. Read our betting rules.</p>
+            </div>
+            <i class="fas fa-chevron-right arrow-right"></i>
+        </a>
+
+        <div class="section-label">Account Help</div>
+        <a href="#" class="support-card" onclick="alert('Please contact Support Bot to reset password.')">
+            <div class="icon-box"><i class="fas fa-unlock-alt"></i></div>
+            <div class="content-box">
+                <h3>Forgot Password</h3>
+                <p>Verify identity to recover your account.</p>
+            </div>
+            <i class="fas fa-chevron-right arrow-right"></i>
+        </a>
+    </div>
+
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">CK WIN - Game Rules</div>
+            
+            <div class="rule-item">
+                <b>1. Opposite Betting Warning</b>
+                একই রাউন্ডে বা ক্যান্ডেলে BIG এবং SMALL উভয় পাশে বেট ধরা সম্পূর্ণ নিষিদ্ধ। যারা অপোজিট বেটিং করবেন, তাদের অ্যাকাউন্ট সাময়িকভাবে স্থগিত করা হবে।
+            </div>
+
+            <div class="rule-item">
+                <b>2. Anti-Hack Policy</b>
+                কোনো প্রকার হ্যাক টুলস বা স্ক্রিপ্ট ব্যবহার করে গেমপ্লে করলে আপনার অ্যাকাউন্ট স্থায়ীভাবে ব্যান (Permanent Ban) করা হবে এবং ব্যালেন্স বাজেয়াপ্ত হবে।
+            </div>
+
+            <div class="rule-item">
+                <b>3. Deposit & Withdraw Rules</b>
+                ডিপোজিট করার সময় সঠিক ট্রানজেকশন আইডি দিতে হবে। উইথড্র রিকোয়েস্ট দেওয়ার পর সর্বোচ্চ ২৪ ঘণ্টার মধ্যে পেমেন্ট কমপ্লিট করা হয়। ভুল নাম্বার দিলে কর্তৃপক্ষ দায়ী থাকবে না।
+            </div>
+
+            <div class="rule-item">
+                <b>4. Multiple Accounts</b>
+                একই ডিভাইসে একাধিক অ্যাকাউন্ট চালালে বোনাস রিজেক্ট করা হতে পারে।
+            </div>
+
+            <button class="close-modal" onclick="closeRules()">I UNDERSTAND</button>
+        </div>
+    </div>
+
+    <div class="bottom-action">
+        <a href="https://t.me/ckwinsupport99_bot" class="btn-live-chat">
+            <i class="fas fa-headset"></i> START LIVE CHAT
+        </a>
+    </div>
+
+    <script>
+        function openRules() { document.getElementById('rulesModal').style.display = 'flex'; }
+        function closeRules() { document.getElementById('rulesModal').style.display = 'none'; }
+        // Modal এর বাইরে ক্লিক করলে বন্ধ হবে
+        window.onclick = function(event) {
+            let modal = document.getElementById('rulesModal');
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+    </script>
+
+</body>
+</html>
