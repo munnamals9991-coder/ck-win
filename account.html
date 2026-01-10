@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - My Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f4f7fb; padding-bottom: 110px; }
+
+        /* প্রোফাইল টপ সেকশন */
+        .profile-top {
+            background: linear-gradient(180deg, #FFD700 0%, #ffc107 100%);
+            padding: 50px 20px 60px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            position: relative;
+        }
+        .avatar-circle {
+            width: 75px; height: 75px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 35px; color: #FFD700; border: 3px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .user-details h2 { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
+        .uid-pill {
+            background: rgba(0,0,0,0.08); padding: 3px 12px; border-radius: 20px;
+            font-size: 12px; font-weight: 600; display: inline-block; margin-top: 5px;
+        }
+
+        /* ব্যালেন্স কার্ড */
+        .wallet-card {
+            background: #fff; margin: -30px 20px 20px; padding: 20px;
+            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .wallet-info p { font-size: 13px; color: #888; margin-bottom: 5px; }
+        .wallet-info h1 { font-size: 26px; color: #000; }
+        .refresh-btn { color: #FFD700; font-size: 20px; cursor: pointer; transition: 0.3s; }
+        .refresh-btn:active { transform: rotate(180deg); }
+
+        /* মেনু গ্রুপ টাইটেল */
+        .group-label { padding: 10px 25px; font-size: 14px; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* মেনু লিস্ট */
+        .menu-container { background: #fff; margin: 0 20px 20px; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .menu-link {
+            display: flex; align-items: center; padding: 16px 20px;
+            text-decoration: none; color: #333; border-bottom: 1px solid #f8f9fa;
+            transition: background 0.2s;
+        }
+        .menu-link:active { background: #fff9e6; }
+        .menu-link i.main-icon { width: 35px; font-size: 18px; color: #FFD700; }
+        .menu-link span { flex-grow: 1; font-size: 15px; font-weight: 500; }
+        .menu-link i.arrow-icon { font-size: 12px; color: #ccc; }
+
+        /* লগআউট বাটন */
+        .logout-section { padding: 0 20px 30px; }
+        .logout-btn {
+            width: 100%; padding: 16px; border-radius: 15px; border: 2px solid #FFD700;
+            background: transparent; color: #FFD700; font-size: 16px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .logout-btn:active { background: #FFD700; color: #000; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav-item { text-align: center; color: #aaa; text-decoration: none; font-size: 10px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item.active { color: #FFD700; }
+        .diamond-btn-wrap { position: relative; top: -35px; }
+        .diamond-btn { width: 60px; height: 60px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5); border: 5px solid #f4f7fb; color: #000; font-size: 24px; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-top">
+        <div class="avatar-circle"><i class="fas fa-user-tie"></i></div>
+        <div class="user-details">
+            <h2 id="dispName">CK PLAYER</h2>
+            <div class="uid-pill">ID: <span id="dispUid">515900</span> <i class="far fa-copy" style="margin-left:5px; cursor:pointer;"></i></div>
+        </div>
+    </div>
+
+    <div class="wallet-card">
+        <div class="wallet-info">
+            <p>Wallet Balance</p>
+            <h1 id="accBalance">৳0.00</h1>
+        </div>
+        <div class="refresh-btn" onclick="location.reload()"><i class="fas fa-sync-alt"></i></div>
+    </div>
+
+    <div class="group-label">Security & Finance</div>
+    <div class="menu-container">
+        <a href="wallet.html" class="menu-link">
+            <i class="fas fa-wallet main-icon"></i>
+            <span>Wallet Management</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="menu-link">
+            <i class="fas fa-shield-alt main-icon"></i>
+            <span>Change Password</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="activity.html" class="menu-link">
+            <i class="fas fa-history main-icon"></i>
+            <span>Betting Records</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+    </div>
+
+    <div class="group-label">Service & Info</div>
+    <div class="menu-container">
+        <a href="#" class="menu-link" onclick="alert('Enter Gift Code Below')">
+            <i class="fas fa-gift main-icon"></i>
+            <span>Redeem Gift Code</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="support.html" class="menu-link">
+            <i class="fas fa-headset main-icon"></i>
+            <span>24/7 Customer Service</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="messages.html" class="menu-link">
+            <i class="fas fa-envelope-open-text main-icon"></i>
+            <span>Internal Message</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="menu-link">
+            <i class="fas fa-info-circle main-icon"></i>
+            <span>About CK WIN</span>
+            <i class="fas fa-chevron-right arrow-icon"></i>
+        </a>
+    </div>
+
+    <div class="logout-section">
+        <button class="logout-btn" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> LOG OUT
+        </button>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-item"><i class="fas fa-gift"></i>Activity</a>
+        <a href="promotion.html" class="nav-item diamond-btn-wrap">
+            <div class="diamond-btn"><i class="fas fa-gem"></i></div>
+            <span style="margin-top:5px; color:#333; font-weight:bold;">Promo</span>
+        </a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-item active"><i class="fas fa-user"></i>Account</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com/" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        // এটি আপনার প্রোফাইলের ডাটা লোড করবে
+        const userId = "user123"; 
+        onValue(ref(db, 'users/' + userId), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('dispName').innerText = data.username || "CK PLAYER";
+                document.getElementById('accBalance').innerText = '৳' + (data.balance || "0.00");
+                document.getElementById('dispUid').innerText = data.uid || "515900";
+            }
+        });
+
+        window.confirmLogout = function() {
+            if(confirm("Are you sure you want to log out?")) {
+                window.location.href = "login.html"; // অথবা আপনার লগইন পেজের নাম
+            }
+        }
+    </script>
+</body>
+</html>
