@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Premium Betting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #f7f8ff; padding-bottom: 70px; }
+
+        /* টপ বার - সম্পূর্ণ হলুদ */
+        .top-header { background: #FFD700; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 22px; font-weight: 900; font-style: italic; color: #000; letter-spacing: 1px; }
+        .header-actions { display: flex; gap: 15px; font-size: 18px; color: #000; }
+
+        /* ব্যানার সেকশন (আগের ব্যানার অক্ষুণ্ণ রাখা হয়েছে) */
+        .banner-box { padding: 10px; }
+        .promo-banner { 
+            width: 100%; height: 160px; 
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://img.freepik.com/free-vector/casino-betting-background-with-poker-elements_23-2148007204.jpg');
+            background-size: cover; background-position: center; border-radius: 12px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: 2px solid #FFD700;
+        }
+        .promo-banner h2 { color: #FFD700; font-size: 24px; text-shadow: 2px 2px 4px #000; }
+
+        /* নোটিশ */
+        .notice-wrapper { background: #fff; margin: 0 10px; padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .notice-wrapper i { color: #FFD700; }
+
+        /* ট্যাব সিস্টেম (WinGo / Popular) */
+        .game-tabs { display: flex; gap: 10px; padding: 15px 10px 5px; }
+        .tab-item { background: #fff; padding: 8px 20px; border-radius: 8px; font-weight: bold; font-size: 14px; color: #666; cursor: pointer; border: 1px solid #eee; }
+        .tab-item.active { background: #FFD700; color: #000; border-color: #FFD700; }
+
+        /* গেম কার্ড লিস্ট (HIGNICE স্টাইল) */
+        .game-list { padding: 10px; }
+        .game-card { 
+            background: #FFD700; /* CK WIN হলুদ থিম */
+            margin-bottom: 12px; border-radius: 15px; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .game-info h3 { font-size: 18px; font-weight: 800; color: #000; margin-bottom: 4px; }
+        .game-info p { font-size: 12px; color: #333; font-weight: 500; }
+        .game-card img { width: 80px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2)); }
+
+        /* বটম নেভিগেশন - ছোট ও প্রফেশনাল */
+        .footer-nav { 
+            position: fixed; bottom: 0; width: 100%; background: #000; height: 60px; 
+            display: flex; justify-content: space-around; align-items: center; 
+            border-top: 2px solid #FFD700; border-radius: 15px 15px 0 0; z-index: 1000; 
+        }
+        .nav-item { text-align: center; color: #888; text-decoration: none; font-size: 10px; transition: 0.3s; }
+        .nav-item i { font-size: 18px; display: block; margin-bottom: 2px; }
+        .nav-item.active { color: #FFD700; }
+        
+        .main-promo { 
+            background: #FFD700; width: 50px; height: 50px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            margin-top: -35px; border: 4px solid #000; color: #000 !important;
+            box-shadow: 0 -4px 10px rgba(255, 215, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="logo">CK WIN</div>
+        <div class="header-actions">
+            <i class="fas fa-envelope-open-text" onclick="window.location.href='messages.html'"></i> <i class="fas fa-download" onclick="window.location.href='download.html'"></i>
+        </div>
+    </header>
+
+    <div class="banner-box">
+        <div class="promo-banner">
+            <h2>CK WIN</h2>
+            <p style="color:#fff; font-size: 12px;">Best Lottery & Game Platform</p>
+        </div>
+    </div>
+
+    <div class="notice-wrapper">
+        <i class="fas fa-volume-up"></i>
+        <marquee>Welcome to CK WIN! Start your journey to winning today. Stay tuned for big updates!</marquee>
+    </div>
+
+    <div class="game-tabs">
+        <div class="tab-item active" onclick="showGames('wingo')">WinGo</div>
+        <div class="tab-item" onclick="showGames('popular')">Popular</div>
+    </div>
+
+    <div class="game-list" id="gameContainer">
+        <div class="game-card" onclick="window.location.href='wingo.html'">
+            <div class="game-info">
+                <h3>Win Go</h3>
+                <p>Guess Number<br>Green/Red/Violet to win</p>
+            </div>
+            <img src="https://i.ibb.co/LhY0mPr/balls.png" alt="WinGo"> </div>
+
+        <div class="game-card" onclick="window.location.href='k3.html'">
+            <div class="game-info">
+                <h3>K3</h3>
+                <p>Guess Number<br>Big/Small/Odd/Even</p>
+            </div>
+            <img src="https://i.ibb.co/Vv9r4pB/dice.png" alt="K3"> </div>
+
+        <div class="game-card" onclick="window.location.href='5d.html'">
+            <div class="game-info">
+                <h3>5D</h3>
+                <p>Guess Number<br>Big/Small/Odd/Even</p>
+            </div>
+            <img src="https://i.ibb.co/0fM8z1z/5dballs.png" alt="5D">
+        </div>
+
+        <div class="game-card" onclick="window.location.href='trxwin.html'">
+            <div class="game-info">
+                <h3>Trx Win</h3>
+                <p>Guess Number<br>Green/Red/Violet to win</p>
+            </div>
+            <img src="https://i.ibb.co/m0XpYVn/trx.png" alt="Trx">
+        </div>
+    </div>
+
+    <nav class="footer-nav">
+        <a href="index.html" class="nav-item active"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-item"><i class="fas fa-gift"></i>Activity</a>
+        <a href="promotion.html" class="nav-item main-promo"><i class="fas fa-gem"></i>Promo</a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-item"><i class="fas fa-user-circle"></i>Account</a>
+    </nav>
+
+    <script>
+        function showGames(type) {
+            // ট্যাব একটিভ করার লজিক
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // এখানে আপনি চাইলে WinGo বা Popular অনুযায়ী গেম লিস্ট পরিবর্তন করতে পারেন।
+            // বর্তমানে ২টাতেই একই গেম দেখাবে আপনার নির্দেশ অনুযায়ী।
+            console.log("Showing games for: " + type);
+        }
+    </script>
+</body>
+</html>
