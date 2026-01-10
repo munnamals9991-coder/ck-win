@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Professional Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f0f2f5; padding-bottom: 100px; }
+
+        /* প্রোফাইল কার্ড */
+        .profile-section {
+            background: linear-gradient(135deg, #FFD700 0%, #ffae00 100%);
+            padding: 40px 20px 50px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            text-align: center;
+            position: relative;
+        }
+        .avatar-container { position: relative; width: 90px; margin: 0 auto 10px; }
+        .user-avatar { width: 90px; height: 90px; border-radius: 50%; border: 4px solid #fff; background: #eee; object-fit: cover; }
+        .edit-avatar-icon {
+            position: absolute; bottom: 0; right: 0;
+            background: #000; color: #FFD700; width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; border: 2px solid #fff; cursor: pointer;
+        }
+        .user-name { font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .edit-name-btn { font-size: 14px; color: #444; cursor: pointer; }
+
+        /* ব্যালেন্স কার্ড */
+        .balance-card {
+            background: #fff; margin: -25px 20px 20px; padding: 20px;
+            border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .balance-card h2 { font-size: 28px; color: #333; }
+
+        /* লিস্ট মেনু */
+        .menu-group { background: #fff; margin: 0 20px 20px; border-radius: 20px; overflow: hidden; }
+        .menu-item {
+            display: flex; align-items: center; padding: 16px 20px;
+            text-decoration: none; color: #333; border-bottom: 1px solid #f5f5f5;
+        }
+        .menu-item i:first-child { width: 30px; color: #FFD700; font-size: 18px; }
+        .menu-item span { flex-grow: 1; font-weight: 500; }
+
+        /* মডাল (Pop-up) ডিজাইন */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #fff; width: 85%; max-width: 350px; padding: 25px;
+            border-radius: 25px; text-align: center; animation: popUp 0.3s ease-out;
+        }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .modal-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .input-box { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 15px; outline: none; }
+        .modal-btns { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-yes { background: #FFD700; color: #000; }
+        .btn-no { background: #eee; color: #666; }
+
+        /* অবতার সিলেকশন গ্রিড */
+        .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .avatar-grid img { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .avatar-grid img:hover { border-color: #FFD700; }
+
+        .logout-btn { color: #ff4757; font-weight: bold; margin-top: 10px; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .nav-item { text-align: center; color: #aaa; text-decoration: none; font-size: 10px; flex: 1; }
+        .nav-item i { font-size: 22px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: #FFD700; }
+        .diamond-wrap { position: relative; top: -30px; }
+        .diamond-btn { width: 55px; height: 55px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 5px solid #f0f2f5; color: #000; font-size: 22px; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-section">
+        <div class="avatar-container">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="currentAvatar" class="user-avatar">
+            <div class="edit-avatar-icon" onclick="openModal('avatarModal')"><i class="fas fa-camera"></i></div>
+        </div>
+        <div class="user-name">
+            <span id="userName">MUNNA</span> 
+            <i class="fas fa-edit edit-name-btn" onclick="openModal('nameModal')"></i>
+        </div>
+        <div style="font-size: 12px; color: #444; margin-top: 5px;">UID: 515900</div>
+    </div>
+
+    <div class="balance-card">
+        <div><p style="font-size: 13px; color: #888;">Total Balance</p><h2 id="accBalance">৳0.54</h2></div>
+        <i class="fas fa-sync-alt" style="color: #FFD700;"></i>
+    </div>
+
+    <div class="menu-group">
+        <a href="#" class="menu-item" onclick="openModal('giftModal')">
+            <i class="fas fa-gift"></i><span>Gift Code</span><i class="fas fa-chevron-right"></i>
+        </a>
+        <a href="support.html" class="menu-item">
+            <i class="fas fa-headset"></i><span>Customer Service</span><i class="fas fa-chevron-right"></i>
+        </a>
+        <a href="#" class="menu-item" onclick="openModal('logoutModal')">
+            <i class="fas fa-sign-out-alt" style="color:#ff4757;"></i><span style="color:#ff4757;">Log Out</span>
+        </a>
+    </div>
+
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Edit User Name</div>
+            <input type="text" id="newName" class="input-box" placeholder="Enter new name">
+            <div class="modal-btns">
+                <button class="btn btn-no" onclick="closeModal('nameModal')">Cancel</button>
+                <button class="btn btn-yes" onclick="updateName()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Redeem Gift Code</div>
+            <input type="text" class="input-box" placeholder="Enter your gift code">
+            <div class="modal-btns">
+                <button class="btn btn-no" onclick="closeModal('giftModal')">Cancel</button>
+                <button class="btn btn-yes" onclick="alert('Invalid Code!')">Redeem</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Choose Avatar</div>
+            <div class="avatar-grid">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" onclick="setAvatar(this.src)">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" onclick="setAvatar(this.src)">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Buddy" onclick="setAvatar(this.src)">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Caleb" onclick="setAvatar(this.src)">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mia" onclick="setAvatar(this.src)">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Zoe" onclick="setAvatar(this.src)">
+            </div>
+            <button class="btn btn-no" style="margin-top:15px; width:100%;" onclick="closeModal('avatarModal')">Close</button>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-question-circle" style="font-size: 50px; color: #FFD700; margin-bottom: 15px;"></i>
+            <div class="modal-title">Are you sure you want to log out?</div>
+            <div class="modal-btns">
+                <button class="btn btn-no" onclick="closeModal('logoutModal')">No</button>
+                <button class="btn btn-yes" onclick="window.location.href='login.html'">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-item"><i class="fas fa-gift"></i>Activity</a>
+        <a href="promotion.html" class="nav-item diamond-wrap"><div class="diamond-btn"><i class="fas fa-gem"></i></div>Promo</a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-item active"><i class="fas fa-user"></i>Account</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com/" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const userId = "user123";
+
+        // ডাটা লোড
+        onValue(ref(db, 'users/' + userId), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('userName').innerText = data.username || "CK Player";
+                document.getElementById('accBalance').innerText = '৳' + (data.balance || "0.00");
+                if(data.avatar) document.getElementById('currentAvatar').src = data.avatar;
+            }
+        });
+
+        // মডাল কন্ট্রোল ফাংশন
+        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+
+        // নাম আপডেট
+        window.updateName = () => {
+            const name = document.getElementById('newName').value;
+            if(name) {
+                update(ref(db, 'users/' + userId), { username: name });
+                closeModal('nameModal');
+            }
+        };
+
+        // অবতার সেট
+        window.setAvatar = (src) => {
+            update(ref(db, 'users/' + userId), { avatar: src });
+            closeModal('avatarModal');
+        };
+    </script>
+</body>
+</html>
