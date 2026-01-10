@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
+        body { background: #f0f1f5; padding-bottom: 80px; }
+
+        /* টপ বার - সম্পূর্ণ হলুদ */
+        .top-bar { 
+            background: #FFD700; 
+            padding: 15px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: #000;
+        }
+        .brand-name { font-size: 24px; font-weight: 900; font-style: italic; }
+        .top-icons { display: flex; gap: 15px; font-size: 20px; }
+
+        /* ব্যানার সেকশন - বেটিং স্টাইল */
+        .banner-container { padding: 10px; }
+        .main-banner { 
+            width: 100%; 
+            height: 180px; 
+            background: linear-gradient(45deg, #000, #444), url('https://img.freepik.com/free-vector/casino-betting-background-with-poker-elements_23-2148007204.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid #FFD700;
+        }
+        .banner-text {
+            color: #FFD700;
+            text-align: center;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .banner-text h2 { font-size: 28px; font-weight: 800; margin-bottom: 5px; }
+        .banner-text p { font-size: 14px; color: #fff; background: rgba(0,0,0,0.5); padding: 2px 10px; border-radius: 10px; }
+
+        /* ব্যালেন্স কার্ড */
+        .balance-card { 
+            background: #fff; 
+            margin: 10px; 
+            padding: 20px; 
+            border-radius: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .balance-amount h1 { font-size: 22px; color: #333; }
+        .balance-amount span { color: #888; font-size: 12px; }
+
+        /* গেম গ্রিড আইকন */
+        .game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px; }
+        .game-item { text-align: center; }
+        .game-item .icon-circle { 
+            background: #FFD700; 
+            width: 55px; height: 55px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 8px;
+            color: #000;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+        }
+        .game-item p { font-size: 12px; font-weight: 600; color: #444; }
+
+        /* বটম নেভিগেশন - ছোট ও প্রফেশনাল */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+            background: #000; 
+            height: 60px; /* হাইট কমানো হয়েছে */
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            border-top: 2px solid #FFD700; 
+            border-radius: 15px 15px 0 0; 
+            z-index: 1000; 
+        }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 10px; flex: 1; }
+        .nav-link i { font-size: 18px; display: block; margin-bottom: 2px; }
+        .nav-link.active { color: #FFD700; }
+        
+        .promo-btn { 
+            background: #FFD700; 
+            width: 50px; height: 50px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-top: -30px; 
+            border: 4px solid #000; 
+            color: #000 !important; 
+        }
+
+        /* নোটিশ বার */
+        .notice-bar { background: #fff; margin: 0 10px; padding: 8px 15px; border-radius: 20px; font-size: 12px; display: flex; align-items: center; gap: 10px; color: #666; }
+        .notice-bar i { color: #FFD700; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="brand-name">CK WIN</div>
+        <div class="top-icons">
+            <i class="fas fa-comment-dots"></i> <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <div class="banner-container">
+        <div class="main-banner">
+            <div class="banner-text">
+                <h2>CK WIN PREMIUM</h2>
+                <p>Welcome to the best betting platform</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="notice-bar">
+        <i class="fas fa-volume-up"></i>
+        <marquee>Welcome to CK WIN! Get 100% bonus on your first deposit. Play responsibly.</marquee>
+    </div>
+
+    <div class="balance-card">
+        <div class="balance-amount">
+            <span>Total Balance</span>
+            <h1>৳ 500.54</h1>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button style="background: #FFD700; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold;">Deposit</button>
+            <button style="background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold;">Withdraw</button>
+        </div>
+    </div>
+
+    <div class="game-grid">
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-dice"></i></div>
+            <p>Win Go</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-gamepad"></i></div>
+            <p>Trx Hash</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-trophy"></i></div>
+            <p>Sports</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-slot-machine"></i></div>
+            <p>Slots</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-club"></i></div>
+            <p>Casino</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-fish"></i></div>
+            <p>Fishing</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-Gift"></i></div>
+            <p>Gift</p>
+        </div>
+        <div class="game-item">
+            <div class="icon-circle"><i class="fas fa-ellipsis-h"></i></div>
+            <p>More</p>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-link active"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-link"><i class="fas fa-shopping-bag"></i>Activity</a>
+        <a href="promotion.html" class="nav-link promo-btn"><i class="fas fa-gem"></i>Promo</a>
+        <a href="wallet.html" class="nav-link"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-link"><i class="fas fa-user"></i>Account</a>
+    </div>
+
+</body>
+</html>
