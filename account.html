@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f8f9fd; padding-bottom: 100px; overflow-x: hidden; }
+
+        /* প্রোফাইল হেডার */
+        .profile-header {
+            background: #FFD700;
+            padding: 50px 20px 80px;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            text-align: center;
+        }
+        .avatar-box { position: relative; width: 100px; margin: 0 auto 15px; }
+        .avatar-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid #fff; background: #fff; }
+        .edit-badge { position: absolute; bottom: 5px; right: 5px; background: #000; color: #FFD700; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; cursor: pointer; }
+
+        .username-row { display: flex; align-items: center; justify-content: center; gap: 8px; color: #000; }
+        .username-row h2 { font-size: 24px; font-weight: 800; }
+
+        /* ব্যালেন্স কার্ড - NaN ফিক্সড */
+        .balance-container {
+            background: #fff; margin: -50px 20px 20px; padding: 25px;
+            border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .balance-label { font-size: 14px; color: #888; text-transform: uppercase; }
+        .balance-amount { font-size: 38px; font-weight: 900; color: #000; margin: 10px 0; display: block; }
+
+        /* ফিন্যান্স বাটন */
+        .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 0 20px 20px; }
+        .fin-btn { background: #000; color: #FFD700; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+        /* মেনু লিস্ট */
+        .menu-list { background: #fff; margin: 0 20px; border-radius: 20px; overflow: hidden; }
+        .menu-item { display: flex; align-items: center; padding: 18px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #f9f9f9; cursor: pointer; }
+        .menu-item i { width: 30px; color: #FFD700; font-size: 20px; }
+        .menu-item span { flex-grow: 1; font-weight: 600; }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; }
+        .modal-card { background: #fff; width: 90%; max-width: 350px; padding: 25px; border-radius: 25px; text-align: center; }
+        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
+        .m-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 1000; }
+        .nav-item { text-align: center; color: #bbb; text-decoration: none; font-size: 11px; }
+        .nav-item i { font-size: 24px; display: block; }
+        .nav-item.active { color: #FFD700; }
+        .promo-btn { margin-top: -30px; width: 60px; height: 60px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 5px solid #f8f9fd; color: #000; font-size: 24px; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4); }
+    </style>
+</head>
+<body>
+
+    <div class="profile-header">
+        <div class="avatar-box">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="pfp" class="avatar-img">
+            <div class="edit-badge" onclick="openModal('avatarModal')"><i class="fas fa-camera"></i></div>
+        </div>
+        <div class="username-row">
+            <h2 id="uName">Loading...</h2>
+            <i class="fas fa-edit" onclick="openModal('nameModal')" style="cursor:pointer;"></i>
+        </div>
+        <p class="uid-text">UID | <span id="uID">000000</span></p>
+    </div>
+
+    <div class="balance-container">
+        <p class="balance-label">Total Asset Balance</p>
+        <span class="balance-amount" id="uBal">৳0.00</span>
+        <p style="font-size: 10px; color: #aaa;">Data synchronized with Firebase</p>
+    </div>
+
+    <div class="finance-grid">
+        <div class="fin-btn" onclick="alert('Deposit Coming Soon!')"><i class="fas fa-plus-circle"></i> Deposit</div>
+        <div class="fin-btn" onclick="alert('Withdraw Coming Soon!')"><i class="fas fa-wallet"></i> Withdraw</div>
+    </div>
+
+    <div class="menu-list">
+        <a href="change-password.html" class="menu-item"><i class="fas fa-lock"></i><span>Change Password</span><i class="fas fa-chevron-right"></i></a>
+        <a href="support.html" class="menu-item"><i class="fas fa-headset"></i><span>Customer Service</span><i class="fas fa-chevron-right"></i></a>
+        <div class="menu-item" onclick="openModal('logoutModal')"><i class="fas fa-sign-out-alt" style="color:red"></i><span style="color:red">Log Out</span></div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-card">
+            <h3>Logout?</h3>
+            <p>Are you sure you want to exit?</p>
+            <div class="btn-row">
+                <button class="m-btn" style="background:#eee" onclick="closeModal('logoutModal')">No</button>
+                <button class="m-btn" style="background:#FFD700" onclick="location.href='login.html'">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-item"><i class="fas fa-gift"></i>Activity</a>
+        <a href="promotion.html" class="nav-item"><div class="promo-btn"><i class="fas fa-gem"></i></div>Promo</a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-item active"><i class="fas fa-user-circle"></i>Account</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com/" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const userId = "user123";
+
+        // NaN ফিক্স করার জন্য Logic
+        onValue(ref(db, 'users/' + userId), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('uName').innerText = data.username || "Guest";
+                document.getElementById('uID').innerText = data.uid || "515900";
+                
+                // ব্যালেন্স চেক: যদি নাম্বার না হয় তবে 0.00 দেখাবে
+                let balance = parseFloat(data.balance);
+                document.getElementById('uBal').innerText = '৳' + (isNaN(balance) ? "0.00" : balance.toFixed(2));
+                
+                if(data.avatar) document.getElementById('pfp').src = data.avatar;
+            }
+        });
+
+        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+    </script>
+</body>
+</html>
