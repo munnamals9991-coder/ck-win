@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Official</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #FFD700; padding-bottom: 90px; overflow-x: hidden; }
+
+        /* Header */
+        .header { background: #000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #FFD700; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 28px; font-weight: 900; color: #FFD700; text-transform: uppercase; letter-spacing: 1px; }
+        .logo span { color: #fff; }
+        .header-icons { display: flex; gap: 18px; color: #FFD700; font-size: 22px; }
+
+        /* Automatic Slider */
+        .slider-container { margin: 15px; border-radius: 20px; overflow: hidden; position: relative; height: 180px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); background: #000; }
+        .slides { display: flex; width: 300%; height: 100%; transition: 0.5s; }
+        .slide { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        
+        /* Banner Text Overlay */
+        .banner-overlay { position: absolute; left: 20px; bottom: 30px; color: #FFD700; text-shadow: 2px 2px 10px #000; }
+        .banner-overlay h2 { font-size: 24px; font-weight: 900; }
+        .banner-overlay p { color: #fff; font-size: 14px; }
+
+        /* Notice Bar */
+        .notice-bar { background: rgba(0,0,0,0.8); margin: 0 15px 20px; padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px; border: 1px solid #FFD700; }
+        .notice-bar i { color: #FFD700; }
+        .notice-bar marquee { color: #fff; font-size: 13px; }
+
+        /* Game Grid - Ball Style */
+        .section-label { padding: 0 20px 15px; font-size: 20px; font-weight: 800; color: #000; text-transform: uppercase; }
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 0 15px 30px; }
+        .ball-game { text-align: center; text-decoration: none; }
+        .ball { 
+            width: 85px; height: 85px; background: #000; border-radius: 50%; margin: 0 auto 10px;
+            display: flex; align-items: center; justify-content: center;
+            border: 4px solid #fff; box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        .ball i { font-size: 35px; color: #FFD700; }
+        .ball-game span { font-size: 14px; font-weight: 700; color: #000; }
+        .ball-game:active .ball { transform: scale(0.9) rotate(10deg); }
+
+        /* WinGo Premium Card */
+        .special-card { 
+            margin: 0 15px 30px; background: #000; border-radius: 25px; padding: 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 2px solid #fff; position: relative; overflow: hidden;
+        }
+        .special-card::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,215,0,0.1), transparent); animation: shine 3s infinite; }
+        @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        
+        .card-info h3 { color: #FFD700; font-size: 26px; font-weight: 900; }
+        .card-info p { color: #fff; font-size: 13px; margin-top: 5px; }
+        .play-btn { background: #FFD700; color: #000; padding: 8px 20px; border-radius: 50px; display: inline-block; margin-top: 15px; font-weight: 900; font-size: 14px; }
+
+        /* Draggable Robot */
+        #robot-cs { position: fixed; top: 70%; right: 20px; z-index: 2000; cursor: move; touch-action: none; }
+        .robot-ui { 
+            width: 70px; height: 70px; background: #000; border-radius: 50%; border: 3px solid #fff;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite alternate;
+        }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        .robot-ui img { width: 50px; }
+
+        /* Animated Navigation */
+        .bottom-nav { 
+            position: fixed; bottom: 0; width: 100%; background: #000; height: 80px;
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 3px solid #FFD700; border-top-left-radius: 35px; border-top-right-radius: 35px;
+        }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 12px; font-weight: bold; transition: 0.3s; flex: 1; }
+        .nav-link i { font-size: 24px; display: block; margin-bottom: 5px; transition: 0.4s; }
+        .nav-link.active { color: #FFD700; }
+        .nav-link.active i { transform: translateY(-12px) scale(1.3); color: #FFD700; text-shadow: 0 0 10px #FFD700; }
+
+        .mid-promo { position: relative; top: -30px; }
+        .promo-box { 
+            width: 65px; height: 65px; background: #FFD700; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 5px solid #000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            color: #000; font-size: 26px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">CK <span>WIN</span></div>
+        <div class="header-icons">
+            <i class="fas fa-wallet" onclick="location.href='wallet.html'"></i>
+            <i class="fas fa-download"></i>
+        </div>
+    </div>
+
+    <div class="slider-container">
+        <div class="slides" id="slideRow">
+            <div class="slide" style="background: linear-gradient(to right, #000, #444);">
+                <div class="banner-overlay">
+                    <h2>BIG WIN JACKPOT</h2>
+                    <p>Play CK WIN & Win ৳50,000 Daily!</p>
+                </div>
+                <img src="https://img.freepik.com/premium-vector/online-casino-banner-with-slot-machine-golden-coins_1017-31349.jpg" alt="B1">
+            </div>
+            <div class="slide" style="background: linear-gradient(to right, #a11, #300);">
+                <div class="banner-overlay">
+                    <h2>WINGO SPECIAL</h2>
+                    <p>1 Minute to Change Your Luck!</p>
+                </div>
+                <img src="https://img.freepik.com/free-vector/gradient-casino-creative-background_23-2149504505.jpg" alt="B2">
+            </div>
+            <div class="slide" style="background: linear-gradient(to right, #050, #010);">
+                <div class="banner-overlay">
+                    <h2>FIRST DEPOSIT</h2>
+                    <p>Get 100% Bonus on First Recharge</p>
+                </div>
+                <img src="https://img.freepik.com/premium-vector/creative-casino-promotion-header-banner_1017-31351.jpg" alt="B3">
+            </div>
+        </div>
+    </div>
+
+    <div class="notice-bar">
+        <i class="fas fa-bullhorn"></i>
+        <marquee>Welcome to CK WIN Official Website! ৳100 Welcome Bonus is waiting for you. Withdraw fast, Play safe!</marquee>
+    </div>
+
+    <div class="section-label">Top Games</div>
+    <div class="game-grid">
+        <a href="wingo.html" class="ball-game">
+            <div class="ball"><i class="fas fa-dice"></i></div>
+            <span>WinGo</span>
+        </a>
+        <a href="#" class="ball-game">
+            <div class="ball"><i class="fas fa-coins"></i></div>
+            <span>Lottery</span>
+        </a>
+        <a href="#" class="ball-game">
+            <div class="ball"><i class="fas fa-headset"></i></div>
+            <span>Slots</span>
+        </a>
+    </div>
+
+    <div class="special-card" onclick="location.href='wingo.html'">
+        <div class="card-info">
+            <h3>WinGo 1Min</h3>
+            <p>Fastest way to earn ৳৳৳</p>
+            <div class="play-btn">PLAY NOW</div>
+        </div>
+        <i class="fas fa-bolt" style="font-size: 70px; color: #FFD700; opacity: 0.8;"></i>
+    </div>
+
+    <div id="robot-cs">
+        <a href="support.html" id="robLink">
+            <div class="robot-ui">
+                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Robot">
+            </div>
+        </a>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-link active"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-link"><i class="fas fa-chart-line"></i>Activity</a>
+        <a href="promotion.html" class="nav-link mid-promo">
+            <div class="promo-box"><i class="fas fa-gift"></i></div>
+            <span style="display:block; margin-top:5px;">Promo</span>
+        </a>
+        <a href="wallet.html" class="nav-link"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-link"><i class="fas fa-user-circle"></i>Account</a>
+    </div>
+
+    <script>
+        // Automatic Slider Logic
+        let currentSlide = 0;
+        const slides = document.getElementById("slideRow");
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % 3;
+            slides.style.transform = `translateX(-${currentSlide * 33.33}%)`;
+        }, 3000);
+
+        // Robot Drag Logic
+        const robot = document.getElementById("robot-cs");
+        const link = document.getElementById("robLink");
+        let dragging = false, startX, startY, initX, initY;
+
+        robot.addEventListener("touchstart", (e) => {
+            dragging = true;
+            startX = e.touches[0].clientX - robot.offsetLeft;
+            startY = e.touches[0].clientY - robot.offsetTop;
+            initX = e.touches[0].clientX;
+            initY = e.touches[0].clientY;
+        });
+
+        document.addEventListener("touchmove", (e) => {
+            if (!dragging) return;
+            e.preventDefault();
+            let x = e.touches[0].clientX - startX;
+            let y = e.touches[0].clientY - startY;
+            x = Math.max(0, Math.min(x, window.innerWidth - 75));
+            y = Math.max(0, Math.min(y, window.innerHeight - 100));
+            robot.style.left = x + "px";
+            robot.style.top = y + "px";
+            robot.style.right = "auto";
+        }, { passive: false });
+
+        document.addEventListener("touchend", (e) => {
+            let dist = Math.sqrt(Math.pow(e.changedTouches[0].clientX - initX, 2) + Math.pow(e.changedTouches[0].clientY - initY, 2));
+            link.onclick = (dist > 10) ? (ev) => ev.preventDefault() : null;
+            dragging = false;
+        });
+    </script>
+</body>
+</html>
