@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f7f8ff; position: relative; min-height: 100vh; }
+
+        /* হেডার স্টাইল - লাল ব্যাকগ্রাউন্ড */
+        .header {
+            background: linear-gradient(135deg, #ff4d4d 0%, #dc2f2f 100%); /* স্ক্রিনশটের মতো লাল */
+            padding: 20px;
+            color: white;
+            padding-bottom: 60px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        
+        /* লোগো/টাইটেল এনিমেশন - হলুদ এবং ঘুরবে */
+        .logo-container {
+            display: inline-block;
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-top: 10px;
+        }
+        .header-title { 
+            font-size: 28px; 
+            font-weight: 900; 
+            font-style: italic;
+            color: #FFD700; /* হলুদ কালার */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #FFD700; /* হলুদ বর্ডার */
+            border-radius: 50%; /* গোল */
+            animation: spinLogo 5s linear infinite; /* ঘোরার এনিমেশন */
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        /* এনিমেশন কি-ফ্রেম */
+        @keyframes spinLogo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* লেখা যাতে উল্টো না হয় তার জন্য কাউন্টার এনিমেশন */
+        .title-text {
+            animation: spinText 5s linear infinite;
+        }
+        @keyframes spinText {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .header-subtitle { font-size: 14px; opacity: 0.9; color: #fff; margin-top: 15px; font-weight: 500;}
+
+        /* কন্টেইনার */
+        .container {
+            background: white;
+            margin: -40px 20px 20px 20px;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-height: 50vh;
+        }
+
+        /* ট্যাব */
+        .tabs { display: flex; justify-content: center; margin-bottom: 25px; border-bottom: 1px solid #eee; }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+        .tab.active { color: #dc2f2f; }
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #dc2f2f;
+        }
+
+        /* ইনপুট */
+        .input-group { margin-bottom: 20px; }
+        .input-label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; margin-bottom: 8px; font-weight: 600; }
+        .input-label i { color: #dc2f2f; }
+        
+        .input-box {
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+        .prefix { font-weight: bold; color: #333; margin-right: 10px; padding-right: 10px; border-right: 1px solid #ddd; }
+        input { border: none; outline: none; width: 100%; background: transparent; font-size: 16px; color: #333; }
+
+        /* বাটন */
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(90deg, #ff4d4d 0%, #dc2f2f 100%);
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(220, 47, 47, 0.3);
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            width: 100%;
+            background: white;
+            border: 2px solid #dc2f2f;
+            color: #dc2f2f;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* ফর্ম ডিসপ্লে */
+        .form-content { display: none; }
+        .form-content.active { display: block; animation: fadeEffect 0.5s; }
+        @keyframes fadeEffect { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+
+        /* ---------- CUSTOM SERVICE ICON ---------- */
+        .cs-icon-container {
+            text-align: center;
+            margin-top: 30px;
+            padding-bottom: 30px;
+        }
+        .cs-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+        }
+        .cs-circle {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+            border: 1px solid #eee;
+        }
+        .cs-circle img { width: 30px; }
+        .cs-circle i { font-size: 24px; color: #dc2f2f; }
+
+        /* TOAST */
+        #custom-toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+        #custom-toast.show { visibility: visible; opacity: 1; top: 50%; transition: 0.3s; }
+        .error-code { display: block; font-size: 12px; color: #FFD700; margin-top: 5px; }
+
+    </style>
+</head>
+<body>
+
+    <div id="custom-toast"></div>
+
+    <div class="header">
+        <div class="header-top">
+            <div style="font-weight: bold;">Login</div>
+            <div style="font-size:14px;">EN <i class="fas fa-globe"></i></div>
+        </div>
+        
+        <div class="logo-container">
+            <div class="header-title">
+                <span class="title-text">CK WIN</span>
+            </div>
+        </div>
+
+        <div class="header-subtitle">Please log in with your phone or email</div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('phoneLogin', this)">
+                <i class="fas fa-mobile-alt"></i> Phone
+            </div>
+            <div class="tab" onclick="switchTab('emailLogin', this)">
+                <i class="fas fa-envelope"></i> Email
+            </div>
+        </div>
+
+        <div id="phoneLogin" class="form-content active">
+            <div class="input-group">
+                <div class="input-label">Phone Number</div>
+                <div class="input-box">
+                    <span class="prefix">+880</span>
+                    <input type="number" id="l_phone" placeholder="17XXXXXXXX">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Password</div>
+                <div class="input-box">
+                    <input type="password" id="l_p_pass" placeholder="Password">
+                    <i class="fas fa-eye-slash" onclick="togglePass('l_p_pass', this)" style="color:#999; padding: 0 10px;"></i>
+                </div>
+            </div>
+            <button class="btn-submit" onclick="handleLogin('phone')">Log in</button>
+            <button class="btn-outline" onclick="location.href='signup.html'">Register</button>
+        </div>
+
+        <div id="emailLogin" class="form-content">
+            <div class="input-group">
+                <div class="input-label">Email</div>
+                <div class="input-box">
+                    <input type="email" id="l_email" placeholder="example@gmail.com">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Password</div>
+                <div class="input-box">
+                    <input type="password" id="l_e_pass" placeholder="Password">
+                    <i class="fas fa-eye-slash" onclick="togglePass('l_e_pass', this)" style="color:#999; padding: 0 10px;"></i>
+                </div>
+            </div>
+            <button class="btn-submit" onclick="handleLogin('email')">Log in</button>
+            <button class="btn-outline" onclick="location.href='signup.html'">Register</button>
+        </div>
+    </div>
+
+    <div class="cs-icon-container">
+        <a href="support.html" class="cs-btn">
+            <div class="cs-circle">
+                <i class="fas fa-headset"></i> </div>
+            <span>Customer Service</span>
+        </a>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW SVF79s5YlRfkLw",
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+    const app = initializeApp(firebaseConfig);
+    const dbRef = ref(getDatabase(app));
+
+    window.switchTab = (formId, tabElement) => {
+        document.querySelectorAll('.form-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(formId).classList.add('active');
+        tabElement.classList.add('active');
+    };
+
+    window.togglePass = (inputId, icon) => {
+        const input = document.getElementById(inputId);
+        input.type = input.type === "password" ? "text" : "password";
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+    };
+
+    function showToast(message, code) {
+        var x = document.getElementById("custom-toast");
+        if (code) { x.innerHTML = `${message}<br><span class="error-code">Error Code: ${code}</span>`; } 
+        else { x.innerHTML = message; }
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    window.handleLogin = (type) => {
+        const id = type === 'phone' ? document.getElementById('l_phone').value : document.getElementById('l_email').value;
+        const pass = type === 'phone' ? document.getElementById('l_p_pass').value : document.getElementById('l_e_pass').value;
+
+        if(!id || !pass) { showToast("Please fill all fields", 101); return; }
+
+        const userId = id.replace(/[^a-zA-Z0-9]/g, "_");
+
+        get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                if (userData.password === pass) {
+                    showToast("Login Successful!", 200);
+                    localStorage.setItem("userKey", userId);
+                    setTimeout(() => { window.location.href = "index.html"; }, 1500);
+                } else {
+                    showToast("Password Is Wrong", 173); 
+                }
+            } else {
+                showToast("Account Not Found", 404);
+            }
+        }).catch((error) => {
+            showToast("Connection Failed", 500);
+        });
+    };
+</script>
+</body>
+</html>
