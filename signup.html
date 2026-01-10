@@ -1,0 +1,267 @@
+her<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f7f8ff; min-height: 100vh; }
+        
+        /* হেডার - লাল এবং স্থির */
+        .header {
+            background: linear-gradient(135deg, #ff4d4d 0%, #dc2f2f 100%);
+            padding: 20px;
+            color: white;
+            padding-bottom: 60px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        
+        .header-title { 
+            font-size: 35px; 
+            font-weight: 900; 
+            font-style: italic; 
+            color: #FFD700; /* হলুদ */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 5px;
+        }
+        .header-subtitle { font-size: 14px; opacity: 0.9; color: #fff; font-weight: 500; }
+
+        /* কন্টেইনার */
+        .container {
+            background: white;
+            margin: -40px 20px 20px 20px;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* ট্যাব */
+        .tabs { display: flex; justify-content: center; margin-bottom: 25px; border-bottom: 1px solid #eee; }
+        .tab { flex: 1; text-align: center; padding: 15px; font-weight: 600; color: #666; cursor: pointer; position: relative; }
+        .tab.active { color: #dc2f2f; }
+        .tab.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: #dc2f2f; }
+
+        /* ইনপুট */
+        .input-group { margin-bottom: 15px; }
+        .input-label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; margin-bottom: 8px; font-weight: 600; }
+        .input-label i { color: #dc2f2f; }
+        .input-box { display: flex; align-items: center; background: #f9f9f9; padding: 12px; border-radius: 10px; border: 1px solid #eee; }
+        .prefix { font-weight: bold; color: #333; margin-right: 10px; padding-right: 10px; border-right: 1px solid #ddd; }
+        input { border: none; outline: none; width: 100%; background: transparent; font-size: 16px; color: #333; }
+
+        /* বাটন */
+        .btn-submit {
+            width: 100%; background: linear-gradient(90deg, #ff4d4d 0%, #dc2f2f 100%);
+            border: none; padding: 15px; border-radius: 30px; color: white; font-size: 18px; font-weight: bold; margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(220, 47, 47, 0.3); cursor: pointer;
+        }
+        .btn-outline {
+            width: 100%; background: white; border: 2px solid #dc2f2f; color: #dc2f2f;
+            padding: 15px; border-radius: 30px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer;
+        }
+
+        .form-content { display: none; }
+        .form-content.active { display: block; animation: fadeEffect 0.5s; }
+        @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
+
+        /* লোডিং */
+        #loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9); z-index: 99999;
+            align-items: center; justify-content: center; flex-direction: column;
+        }
+        .spinner-circle {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 4px solid #eee; border-top-color: #dc2f2f;
+            animation: spin 1s linear infinite; margin-bottom: 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* কাস্টমার সার্ভিস আইকন */
+        .cs-icon-container { text-align: center; margin-top: 20px; padding-bottom: 20px; }
+        .cs-btn { display: inline-flex; flex-direction: column; align-items: center; text-decoration: none; color: #666; font-size: 12px; }
+        .cs-circle { width: 45px; height: 45px; background: #fff; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 5px; border: 1px solid #eee; }
+        .cs-circle i { font-size: 20px; color: #dc2f2f; }
+
+        /* টোস্ট */
+        #custom-toast {
+            visibility: hidden; min-width: 260px; background-color: rgba(0, 0, 0, 0.85);
+            color: #fff; text-align: center; border-radius: 50px; padding: 16px;
+            position: fixed; z-index: 9999; left: 50%; top: 40%; transform: translate(-50%, -50%);
+        }
+        #custom-toast.show { visibility: visible; opacity: 1; top: 50%; transition: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <div id="loading-overlay">
+        <div class="spinner-circle"></div>
+        <div style="color: #dc2f2f; font-weight: bold;">Processing...</div>
+    </div>
+
+    <div id="custom-toast"></div>
+
+    <div class="header">
+        <div class="header-top">
+            <div style="font-weight: bold;">Register</div>
+            <div style="font-size:14px;">EN <i class="fas fa-globe"></i></div>
+        </div>
+        <div class="header-title">CK WIN</div>
+        <div class="header-subtitle">Create account to start earning</div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('phoneForm', this)">
+                <i class="fas fa-mobile-alt"></i> Phone
+            </div>
+            <div class="tab" onclick="switchTab('emailForm', this)">
+                <i class="fas fa-envelope"></i> Email
+            </div>
+        </div>
+
+        <div id="phoneForm" class="form-content active">
+            <div class="input-group">
+                <div class="input-label">Phone Number</div>
+                <div class="input-box">
+                    <span class="prefix">+880</span>
+                    <input type="number" id="p_num" placeholder="17XXXXXXXX">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Set Password</div>
+                <div class="input-box">
+                    <input type="password" id="p_pass" placeholder="Password">
+                    <i class="fas fa-eye-slash" onclick="togglePass('p_pass', this)" style="color:#ccc"></i>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Confirm Password</div>
+                <div class="input-box">
+                    <input type="password" id="p_conf" placeholder="Confirm Password">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Invite Code</div>
+                <div class="input-box">
+                    <input type="text" id="p_invite" placeholder="Invite Code (Optional)">
+                </div>
+            </div>
+            <button class="btn-submit" onclick="handleRegister('phone')">Register</button>
+            <button class="btn-outline" onclick="location.href='login.html'">Login Account</button>
+        </div>
+
+        <div id="emailForm" class="form-content">
+            <div class="input-group">
+                <div class="input-label">Mail Address</div>
+                <div class="input-box">
+                    <input type="email" id="e_mail" placeholder="example@gmail.com">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Set Password</div>
+                <div class="input-box">
+                    <input type="password" id="e_pass" placeholder="Password">
+                    <i class="fas fa-eye-slash" onclick="togglePass('e_pass', this)" style="color:#ccc"></i>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Confirm Password</div>
+                <div class="input-box">
+                    <input type="password" id="e_conf" placeholder="Confirm Password">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Invite Code</div>
+                <div class="input-box">
+                    <input type="text" id="e_invite" placeholder="Invite Code (Optional)">
+                </div>
+            </div>
+            <button class="btn-submit" onclick="handleRegister('email')">Register</button>
+            <button class="btn-outline" onclick="location.href='login.html'">Login Account</button>
+        </div>
+    </div>
+
+    <div class="cs-icon-container">
+        <a href="support.html" class="cs-btn">
+            <div class="cs-circle">
+                <i class="fas fa-headset"></i>
+            </div>
+            <span>Support</span>
+        </a>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW SVF79s5YlRfkLw",
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.switchTab = (formId, tabElement) => {
+        document.querySelectorAll('.form-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(formId).classList.add('active');
+        tabElement.classList.add('active');
+    };
+
+    window.togglePass = (inputId, icon) => {
+        const input = document.getElementById(inputId);
+        input.type = input.type === "password" ? "text" : "password";
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+    };
+
+    function showToast(message, code) {
+        var x = document.getElementById("custom-toast");
+        if (code) { x.innerHTML = `${message}<br><span style="color:#FFD700; font-size:12px;">Code: ${code}</span>`; } 
+        else { x.innerHTML = message; }
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    function showLoading() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+    }
+
+    window.handleRegister = (type) => {
+        const id = type === 'phone' ? document.getElementById('p_num').value : document.getElementById('e_mail').value;
+        const pass = type === 'phone' ? document.getElementById('p_pass').value : document.getElementById('e_pass').value;
+        const conf = type === 'phone' ? document.getElementById('p_conf').value : document.getElementById('e_conf').value;
+        const invite = type === 'phone' ? document.getElementById('p_invite').value : document.getElementById('e_invite').value;
+
+        if(!id || !pass || !conf) { showToast("Please fill all fields", 101); return; }
+        if(pass.length < 6) { showToast("Password must be 6+ chars", 102); return; }
+        if(pass !== conf) { showToast("Password Mismatch", 173); return; }
+
+        showLoading();
+
+        const userId = id.replace(/[^a-zA-Z0-9]/g, "_");
+
+        set(ref(db, 'users/' + userId), {
+            loginID: id,
+            password: pass,
+            inviteCode: invite,
+            balance: 0.00,
+            joinDate: new Date().toISOString()
+        }).then(() => {
+            setTimeout(() => { window.location.href = "login.html"; }, 2000);
+        }).catch((err) => {
+            document.getElementById('loading-overlay').style.display = 'none';
+            showToast("Registration Failed", 500);
+        });
+    };
+</script>
+</body>
+</html>
