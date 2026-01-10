@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background-color: #f4f7fb; padding-bottom: 80px; }
+        .top-profile { background: #FFD700; padding: 40px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 60px; height: 60px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #FFD700; border: 2px solid #fff; }
+        .balance-card { background: #fff; margin: -20px 15px 15px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .action-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px 15px; }
+        .action-box { text-align: center; font-size: 12px; color: #555; }
+        .action-box i { width: 45px; height: 45px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; color: #FFD700; font-size: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .list-group { background: #fff; margin: 15px; border-radius: 15px; overflow: hidden; }
+        .list-item { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #f9f9f9; text-decoration: none; color: #333; font-size: 14px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; }
+        .nav-item { text-align: center; color: #bbb; text-decoration: none; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; }
+        .nav-item.active { color: #FFD700; }
+    </style>
+</head>
+<body>
+    <div class="top-profile">
+        <div class="avatar"><i class="fas fa-user"></i></div>
+        <div><h2 style="font-size:18px;">MUNNA <span style="background:#000; color:#FFD700; font-size:10px; padding:2px 5px; border-radius:5px;">VIP2</span></h2><p style="font-size:12px; opacity:0.8;">UID | 515900</p></div>
+    </div>
+    <div class="balance-card"><p style="color:#888; font-size:13px;">Total Balance</p><h1 style="margin:5px 0;">৳0.54</h1></div>
+    <div class="action-row">
+        <div class="action-box"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="action-box"><i class="fas fa-piggy-bank"></i>Deposit</div>
+        <div class="action-box"><i class="fas fa-money-check-alt"></i>Withdraw</div>
+        <div class="action-box"><i class="fas fa-crown"></i>VIP</div>
+    </div>
+    <div class="list-group">
+        <a href="#" class="list-item"><span><i class="fas fa-bell" style="color:#FFD700; margin-right:10px;"></i> Notification</span><i class="fas fa-chevron-right"></i></a>
+        <a href="#" class="list-item"><span><i class="fas fa-gift" style="color:#FFD700; margin-right:10px;"></i> Gifts</span><i class="fas fa-chevron-right"></i></a>
+        <a href="support.html" class="list-item"><span><i class="fas fa-headset" style="color:#FFD700; margin-right:10px;"></i> Customer Service</span><i class="fas fa-chevron-right"></i></a>
+    </div>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-th-large"></i><span>Activity</span></a>
+        <a href="account.html" class="nav-item active"><i class="fas fa-user-circle"></i><span>Account</span></a>
+    </div>
+</body>
+</html>
