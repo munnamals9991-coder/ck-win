@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Promotion - CK WIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #fdfdfd; padding-bottom: 100px; color: #333; }
+
+        /* হেডার */
+        .header { background: #fff; padding: 15px; text-align: center; border-bottom: 1px solid #eee; font-weight: bold; font-size: 18px; position: sticky; top: 0; z-index: 100; }
+
+        /* কমিশন বক্স (হলুদ গ্রেডিয়েন্ট) */
+        .commission-card { 
+            background: linear-gradient(180deg, #f7da1e 0%, #b8a200 100%); 
+            margin: 15px; padding: 25px 15px; border-radius: 15px; color: #000; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .commission-card p { font-size: 13px; font-weight: 500; }
+        .commission-card h2 { font-size: 28px; margin: 8px 0; }
+
+        /* ডাটা গ্রিড */
+        .data-container { display: grid; grid-template-columns: 1fr 1fr; margin: 0 15px; background: #fff; border-radius: 12px; border: 1px solid #eee; overflow: hidden; }
+        .data-header { padding: 12px; text-align: center; font-size: 13px; font-weight: bold; color: #fff; }
+        .direct-head { background: #ff9f43; }
+        .team-head { background: #ee5253; }
+        .data-box { padding: 15px; text-align: center; border: 0.5px solid #fafafa; }
+        .data-box h4 { font-size: 18px; color: #000; }
+        .data-box p { font-size: 10px; color: #888; margin-top: 3px; }
+
+        /* মেনু লিস্ট */
+        .menu-list { margin: 20px 15px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item span { font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .menu-item i.icon { color: #f7da1e; font-size: 18px; }
+        .copy-val { font-size: 14px; font-weight: bold; color: #555; }
+
+        /* বটম নেভিগেশন (ছবি অনুযায়ী হুবহু) */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; height: 65px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 11px; flex: 1; transition: 0.3s; cursor: pointer; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: #f7da1e; }
+        
+        /* মাঝখানের স্পেশাল প্রমো বাটন */
+        .promo-center { position: relative; z-index: 1001; }
+        .promo-circle { 
+            background: #f7da1e; width: 65px; height: 65px; border-radius: 50%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin-top: -45px; border: 5px solid #fdfdfd; color: #000; font-weight: bold; font-size: 10px;
+        }
+        .promo-circle i { font-size: 22px; margin-bottom: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">Agency</div>
+
+    <div class="commission-card">
+        <p>Yesterday's total commission</p>
+        <h2 id="yesterdayComm">৳ 0.00</h2>
+        <p style="opacity: 0.8; font-size: 11px;">Upgrade the level to increase commission income</p>
+    </div>
+
+    <div class="data-container">
+        <div class="data-header direct-head">Direct subordinates</div>
+        <div class="data-header team-head">Team subordinates</div>
+        
+        <div class="data-box"><h4 id="d_reg">0</h4><p>number of register</p></div>
+        <div class="data-box"><h4 id="t_reg">0</h4><p>number of register</p></div>
+        
+        <div class="data-box"><h4 id="d_dep">0</h4><p>Deposit number</p></div>
+        <div class="data-box"><h4 id="t_dep">0</h4><p>Deposit number</p></div>
+    </div>
+
+    <div class="menu-list">
+        <div class="menu-item" onclick="goTo('partner-rewards.html')">
+            <span><i class="fas fa-users icon"></i> Partner rewards</span>
+            <i class="fas fa-chevron-right" style="color:#ccc;"></i>
+        </div>
+        
+        <div class="menu-item" onclick="copyCode()">
+            <span><i class="fas fa-copy icon"></i> Copy invitation code</span>
+            <span class="copy-val" id="invCode">5122651590</span>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="goTo('index.html')">
+            <i class="fas fa-home"></i>Home
+        </div>
+        <div class="nav-item" onclick="goTo('activity.html')">
+            <i class="fas fa-gift"></i>Activity
+        </div>
+        <div class="nav-item promo-center" onclick="goTo('promotion.html')">
+            <div class="promo-circle">
+                <i class="fas fa-gem"></i>Promo
+            </div>
+        </div>
+        <div class="nav-item" onclick="goTo('wallet.html')">
+            <i class="fas fa-wallet"></i>Wallet
+        </div>
+        <div class="nav-item" onclick="goTo('account.html')">
+            <i class="fas fa-user-circle"></i>Account
+        </div>
+    </nav>
+
+    <script>
+        // ১. Firebase Setup (আপনার লিঙ্ক দিয়ে আপডেট করা)
+        const firebaseConfig = {
+            databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // ইউজার আইডি (এখানে ডাটাবেসের আইডি হবে)
+        const myUid = "5122651590"; 
+
+        // ২. ডাটাবেস থেকে রিয়েল টাইম ডাটা আনা
+        database.ref('users/' + myUid + '/agency').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('yesterdayComm').innerText = "৳ " + (data.commission || "0.00");
+                document.getElementById('invCode').innerText = data.invite_code || myUid;
+                document.getElementById('d_reg').innerText = data.direct_reg || "0";
+                document.getElementById('t_reg').innerText = data.team_reg || "0";
+                document.getElementById('d_dep').innerText = data.direct_dep || "0";
+                document.getElementById('t_dep').innerText = data.team_dep || "0";
+            }
+        });
+
+        // ৩. ইনভাইট কোড কপি ফাংশন
+        function copyCode() {
+            const code = document.getElementById('invCode').innerText;
+            navigator.clipboard.writeText(code);
+            alert("Invitation Code Copied: " + code);
+        }
+
+        // ৪. পেজ নেভিগেশন
+        function goTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>
