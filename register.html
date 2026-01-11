@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        /* তোমার আগের সব স্টাইল ঠিক আছে, তাই ছোট করে দিলাম */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f7f8ff; }
+        .header { background: #FFD700; padding: 20px; padding-bottom: 50px; text-align: center; }
+        .header-title { font-size: 35px; font-weight: 900; font-style: italic; color: #000; }
+        .container { background: white; margin-top: -30px; border-radius: 20px 20px 0 0; padding: 20px; min-height: 80vh; }
+        .tabs { display: flex; justify-content: center; margin-bottom: 25px; }
+        .tab { flex: 1; text-align: center; padding: 10px; font-weight: 600; color: #666; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab.active { color: #FFA500; border-bottom: 3px solid #FFA500; }
+        .input-group { margin-bottom: 20px; }
+        .input-box { display: flex; align-items: center; background: #fff; padding: 12px; border-radius: 10px; border: 1px solid #eee; }
+        input { border: none; outline: none; width: 100%; font-size: 16px; }
+        .btn-submit { width: 100%; background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%); border: none; padding: 15px; border-radius: 30px; color: white; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-outline { width: 100%; background: white; border: 1px solid #FFA500; color: #FFA500; padding: 15px; border-radius: 30px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        
+        .form-content { display: none; }
+        .form-content.active { display: block; }
+        
+        /* লোডার */
+        #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 999; align-items: center; justify-content: center; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #eee; border-top: 5px solid #FFD700; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="loading-overlay"><div class="spinner"></div></div>
+
+    <div class="header">
+        <div class="header-title">CK WIN</div>
+        <p>Register to make money</p>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('phoneForm', this)">Phone Register</div>
+            <div class="tab" onclick="switchTab('emailForm', this)">Email Register</div>
+        </div>
+
+        <div id="phoneForm" class="form-content active">
+            <div class="input-group">
+                <div class="input-box">
+                    <span style="margin-right:10px; font-weight:bold">+880</span>
+                    <input type="number" id="p_num" placeholder="17XXXXXXXX">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-box"><input type="password" id="p_pass" placeholder="Password"></div>
+            </div>
+            <div class="input-group">
+                <div class="input-box"><input type="password" id="p_conf" placeholder="Confirm Password"></div>
+            </div>
+            <div class="input-group">
+                <div class="input-box"><input type="text" id="p_invite" placeholder="Invite Code (Optional)"></div>
+            </div>
+            <button class="btn-submit" onclick="handleRegister('phone')">Register</button>
+            <button class="btn-outline" onclick="location.href='login.html'">Login</button>
+        </div>
+
+        <div id="emailForm" class="form-content">
+            <div class="input-group">
+                <div class="input-box"><input type="email" id="e_mail" placeholder="Email Address"></div>
+            </div>
+            <div class="input-group">
+                <div class="input-box"><input type="password" id="e_pass" placeholder="Password"></div>
+            </div>
+            <div class="input-group">
+                <div class="input-box"><input type="password" id="e_conf" placeholder="Confirm Password"></div>
+            </div>
+            <div class="input-group">
+                <div class="input-box"><input type="text" id="e_invite" placeholder="Invite Code (Optional)"></div>
+            </div>
+            <button class="btn-submit" onclick="handleRegister('email')">Register</button>
+            <button class="btn-outline" onclick="location.href='login.html'">Login</button>
+        </div>
+    </div>
+
+<script>
+    // 1. Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW-SVF79s5YlRfkLw", // স্পেস ফিক্স করা হয়েছে
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Tab Switching
+    function switchTab(formId, tabBtn) {
+        document.querySelectorAll('.form-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(formId).classList.add('active');
+        tabBtn.classList.add('active');
+    }
+
+    // Register Logic
+    function handleRegister(type) {
+        const id = type === 'phone' ? document.getElementById('p_num').value : document.getElementById('e_mail').value;
+        const pass = type === 'phone' ? document.getElementById('p_pass').value : document.getElementById('e_pass').value;
+        const conf = type === 'phone' ? document.getElementById('p_conf').value : document.getElementById('e_conf').value;
+        const invite = type === 'phone' ? document.getElementById('p_invite').value : document.getElementById('e_invite').value;
+
+        if(!id || !pass || !conf) { alert("Please fill all fields"); return; }
+        if(pass.length < 6) { alert("Password must be 6+ chars"); return; }
+        if(pass !== conf) { alert("Passwords do not match"); return; }
+
+        document.getElementById('loading-overlay').style.display = 'flex';
+
+        // ইউজারের আইডি ক্লিন করা (যেমন . বা @ থাকলে সমস্যা হতে পারে ডাটাবেস কি হিসেবে)
+        // ফোনের ক্ষেত্রে নম্বরটাই আইডি, ইমেইলের ক্ষেত্রে একটু ক্লিন করা হলো
+        const userId = id.replace(/[^a-zA-Z0-9]/g, ""); 
+
+        // ডাটাবেসে চেক করা ইউজার আগে আছে কিনা
+        database.ref('users/' + userId).once('value', snapshot => {
+            if (snapshot.exists()) {
+                document.getElementById('loading-overlay').style.display = 'none';
+                alert("Account already exists!");
+            } else {
+                // নতুন ইউজার ডাটা
+                database.ref('users/' + userId).set({
+                    loginID: id,
+                    password: pass,
+                    used_invite_code: invite, // যে কোড দিয়ে খুলেছে
+                    balance: 0.00,
+                    joinDate: new Date().toISOString(),
+                    // এখানেই প্রমোশন ডাটা সেট করে দিচ্ছি যাতে অ্যাডমিনে শো করে
+                    promotion: {
+                        invite_code: userId, // নিজের রেফার কোড হবে নিজের ইউজার আইডি
+                        yesterday_commission: 0,
+                        direct_reg: 0,
+                        team_reg: 0
+                    }
+                }).then(() => {
+                    localStorage.setItem("userPhone", userId); // অটো লগইন
+                    alert("Registration Successful!");
+                    window.location.href = "index.html"; // হোম পেজে নিয়ে যাবে
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>
