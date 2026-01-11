@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Admin Panel</title>
+    <style>
+        body { background: #0f172a; color: white; font-family: Arial; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; color: #6366f1; margin-bottom: 30px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e293b; border-radius: 10px; overflow: hidden; }
+        th, td { border: 1px solid #334155; padding: 12px; text-align: center; font-size: 13px; }
+        th { background: #1e293b; color: #6366f1; text-transform: uppercase; }
+        
+        .promo-inputs input { width: 70px; margin: 2px; padding: 5px; border-radius: 4px; border: none; font-size: 12px; }
+        .balance-input { width: 80px; padding: 5px; border-radius: 5px; border: none; }
+        
+        button { cursor: pointer; border: none; padding: 8px 12px; border-radius: 5px; color: white; font-weight: bold; transition: 0.3s; }
+        .btn-balance { background: #2ecc71; margin-bottom: 5px; width: 100%; }
+        .btn-promo { background: #f39c12; width: 100%; }
+        button:hover { opacity: 0.8; }
+        
+        .section-title { margin-top: 40px; color: #f39c12; border-left: 4px solid #f39c12; padding-left: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CK WIN - প্রফেশনাল অ্যাডমিন প্যানেল</h1>
+
+        <h3 class="section-title">ইউজার ম্যানেজমেন্ট (ব্যালেন্স ও প্রমোশন কন্ট্রোল)</h3>
+        <div id="userList">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ফোন নম্বর</th>
+                        <th>ব্যালেন্স (৳)</th>
+                        <th>প্রমোশন ডাটা আপডেট (Yesterday, Code, D-Reg, T-Reg)</th>
+                        <th>অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW SVF79s5YlRfkLw",
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // সব ইউজারের ডাটাবেস থেকে তথ্য আনা
+    onValue(ref(db, 'users'), (snapshot) => {
+        const data = snapshot.val();
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+
+        for (let phone in data) {
+            const promo = data[phone].promotion || {};
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${phone}</b></td>
+                    <td>
+                        <div>৳ ${data[phone].balance || 0}</div>
+                        <input type="number" id="bal-${phone}" class="balance-input" placeholder="নতুন টাকা">
+                        <button class="btn-balance" onclick="updateBalance('${phone}')">Update Bal</button>
+                    </td>
+                    <td class="promo-inputs">
+                        <input type="number" id="comm-${phone}" placeholder="Comm" value="${promo.yesterday_commission || ''}">
+                        <input type="text" id="code-${phone}" placeholder="Code" value="${promo.invite_code || ''}"> <br>
+                        <input type="number" id="dreg-${phone}" placeholder="D-Reg" value="${promo.direct_reg || ''}">
+                        <input type="number" id="treg-${phone}" placeholder="T-Reg" value="${promo.team_reg || ''}">
+                    </td>
+                    <td>
+                        <button class="btn-promo" onclick="updatePromo('${phone}')">Update Promo</button>
+                    </td>
+                </tr>
+            `;
+        }
+    });
+
+    // ব্যালেন্স আপডেট করার ফাংশন
+    window.updateBalance = function(phone) {
+        const amount = document.getElementById('bal-'+phone).value;
+        if(amount) {
+            update(ref(db, 'users/' + phone), {
+                balance: parseFloat(amount)
+            }).then(() => alert("ব্যালেন্স আপডেট হয়েছে!"));
+        } else {
+            alert("টাকার পরিমাণ লিখুন");
+        }
+    }
+
+    // প্রমোশন ডাটা আপডেট করার ফাংশন
+    window.updatePromo = function(phone) {
+        const promoData = {
+            yesterday_commission: document.getElementById('comm-'+phone).value || "0.00",
+            invite_code: document.getElementById('code-'+phone).value || phone,
+            direct_reg: document.getElementById('dreg-'+phone).value || "0",
+            team_reg: document.getElementById('treg-'+phone).value || "0"
+        };
+
+        update(ref(db, 'users/' + phone + '/promotion'), promoData)
+        .then(() => alert("প্রমোশন ডাটা সফলভাবে আপডেট হয়েছে!"));
+    }
+
+</script>
+</body>
+</html>
