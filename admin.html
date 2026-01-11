@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Super Admin</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; padding: 10px; }
+        h1 { text-align: center; color: #facc15; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e293b; font-size: 12px; }
+        th, td { border: 1px solid #334155; padding: 8px; text-align: center; }
+        th { background: #334155; color: #facc15; }
+
+        input { background: #0f172a; border: 1px solid #475569; color: white; padding: 5px; border-radius: 4px; width: 90%; margin: 2px 0; text-align: center; }
+        
+        .btn { border: none; padding: 6px; width: 100%; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; margin-top: 5px; font-size: 11px; }
+        .btn-wallet { background: #22c55e; } /* Green */
+        .btn-promo { background: #f97316; } /* Orange */
+        .btn-activity { background: #3b82f6; } /* Blue */
+        
+        .section-header { font-weight: bold; color: #94a3b8; margin-bottom: 5px; display: block; font-size: 10px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <h1>CK WIN CONTROL PANEL</h1>
+    <div style="text-align:center; color:#94a3b8; font-size:12px;">Total Users: <span id="totalUser">0</span></div>
+
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th style="width:15%">User Info</th>
+                <th style="width:25%">Wallet Control</th>
+                <th style="width:30%">Agency / Promotion</th>
+                <th style="width:30%">Activity / Bonus</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr><td colspan="4">Loading data...</td></tr>
+        </tbody>
+    </table>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvmMKF0SlY81K20YmHW-SVF79s5YlRfkLw", 
+        authDomain: "ck-win-36ca8.firebaseapp.com",
+        projectId: "ck-win-36ca8",
+        databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // ডাটা রিড করা
+    database.ref('users').on('value', (snapshot) => {
+        const data = snapshot.val();
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+        
+        if(data) {
+            document.getElementById('totalUser').innerText = Object.keys(data).length;
+            
+            for (let phone in data) {
+                const user = data[phone];
+                const promo = user.promotion || {};
+                const activity = user.activity || {}; // অ্যাক্টিভিটি ডাটা আলাদা থাকবে
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>
+                            <b style="color:#facc15">${phone}</b><br>
+                            Pass: ${user.password}
+                        </td>
+                        
+                        <td>
+                            <span class="section-header">Current: ৳${user.balance || 0}</span>
+                            <input type="number" id="bal-${phone}" placeholder="Add Amount">
+                            <button class="btn btn-wallet" onclick="updateBalance('${phone}')">UPDATE BALANCE</button>
+                        </td>
+
+                        <td>
+                            <span class="section-header">Invite Code: ${promo.invite_code || phone}</span>
+                            <input type="number" id="comm-${phone}" value="${promo.yesterday_commission || 0}" placeholder="Yest. Comm">
+                            <div style="display:flex; gap:2px;">
+                                <input type="number" id="dreg-${phone}" value="${promo.direct_reg || 0}" placeholder="D-Reg">
+                                <input type="number" id="treg-${phone}" value="${promo.team_reg || 0}" placeholder="T-Reg">
+                            </div>
+                            <button class="btn btn-promo" onclick="updatePromo('${phone}')">UPDATE AGENCY</button>
+                        </td>
+
+                        <td>
+                            <span class="section-header">Gifts / Rewards</span>
+                            <input type="number" id="act-bonus-${phone}" value="${activity.today_bonus || 0}" placeholder="Today Bonus">
+                            <input type="text" id="act-msg-${phone}" value="${activity.message || ''}" placeholder="Special Message">
+                            <button class="btn btn-activity" onclick="updateActivity('${phone}')">UPDATE ACTIVITY</button>
+                        </td>
+                    </tr>
+                `;
+            }
+        } else {
+            tbody.innerHTML = "<tr><td colspan='4'>No users found</td></tr>";
+        }
+    });
+
+    // --- বাটন ফাংশন সমূহ ---
+
+    // ১. ব্যালেন্স আপডেট
+    function updateBalance(phone) {
+        const amount = document.getElementById(`bal-${phone}`).value;
+        if(amount) {
+            database.ref(`users/${phone}`).update({ balance: parseFloat(amount) })
+            .then(() => alert("Balance Updated!"));
+        }
+    }
+
+    // ২. এজেন্সি আপডেট
+    function updatePromo(phone) {
+        const data = {
+            yesterday_commission: document.getElementById(`comm-${phone}`).value,
+            direct_reg: document.getElementById(`dreg-${phone}`).value,
+            team_reg: document.getElementById(`treg-${phone}`).value,
+            invite_code: phone // কোড চেঞ্জ করা যাবে না, ফিক্সড থাকবে
+        };
+        database.ref(`users/${phone}/promotion`).update(data)
+        .then(() => alert("Agency Data Updated!"));
+    }
+
+    // ৩. অ্যাক্টিভিটি আপডেট
+    function updateActivity(phone) {
+        const data = {
+            today_bonus: document.getElementById(`act-bonus-${phone}`).value,
+            message: document.getElementById(`act-msg-${phone}`).value
+        };
+        database.ref(`users/${phone}/activity`).update(data)
+        .then(() => alert("Activity Bonus Updated!"));
+    }
+
+</script>
+</body>
+</html>
