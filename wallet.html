@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wallet - CK WIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Activity.html এর স্টাইল অনুসরণ করা হয়েছে */
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; -webkit-tap-highlight-color: transparent !important; -webkit-touch-callout: none !important; user-select: none; outline: none; }
+        body { background: #f4f5f8; padding-bottom: 80px; }
+
+        /* হেডার ব্যালেন্স বক্স */
+        .wallet-header { background: linear-gradient(180deg, #FFD700 0%, #000 100%); padding: 40px 15px; text-align: center; color: #FFD700; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+        .wallet-header p { color: #fff; font-size: 14px; margin-bottom: 5px; }
+        .wallet-header h2 { font-size: 32px; font-weight: 900; margin-bottom: 10px; }
+        .uid-box { font-size: 12px; background: rgba(255,255,255,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; color: #FFD700; border: 1px solid rgba(255,215,0,0.3); }
+
+        /* বাটন গ্রুপ */
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px 15px; margin-top: -20px; }
+        .w-btn { padding: 15px; border-radius: 12px; border: none; font-weight: bold; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .dep-btn { background: #000; color: #FFD700; border: 1px solid #FFD700; }
+        .wit-btn { background: #fff; color: #000; border: 1px solid #eee; }
+
+        /* হিস্টোরি কার্ড */
+        .history-card { background: #fff; margin: 0 15px 20px; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .history-card h3 { font-size: 16px; color: #000; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }
+        .history-card h3 i { color: #FFD700; }
+        .no-data { text-align: center; color: #999; font-size: 13px; padding: 30px 0; }
+
+        /* বটম নেভিগেশন (Activity.html এর সাথে হুবহু মিল) */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; height: 60px; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #FFD700; border-radius: 18px 18px 0 0; z-index: 1000; }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 11px; flex: 1; cursor: pointer; }
+        .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
+        .nav-link.active { color: #FFD700; }
+        .promo-btn-box { background: #FFD700; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid #000; color: #000 !important; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="wallet-header">
+        <p>Main Wallet Balance</p>
+        <h2 id="uBal">৳ 0.00</h2>
+        <div class="uid-box">UID: <span id="uID">Loading...</span></div>
+    </div>
+
+    <div class="btn-group">
+        <button class="w-btn dep-btn" onclick="goTo('recharge.html')">
+            <i class="fas fa-plus-circle"></i> Deposit
+        </button>
+        <button class="w-btn wit-btn" onclick="goTo('withdraw.html')">
+            <i class="fas fa-money-bill-wave"></i> Withdraw
+        </button>
+    </div>
+
+    <div class="history-card">
+        <h3><i class="fas fa-history"></i> Transaction History</h3>
+        <div class="no-data">
+            <i class="fas fa-folder-open" style="font-size: 30px; margin-bottom: 10px; display: block;"></i>
+            No records found.
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-link" onclick="goTo('index.html')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-link" onclick="goTo('activity.html')"><i class="fas fa-gift"></i>Activity</div>
+        <div class="nav-link promo-btn-box" onclick="goTo('promotion.html')"><i class="fas fa-gem"></i>Promo</div>
+        <div class="nav-link active" onclick="goTo('wallet.html')"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="nav-link" onclick="goTo('account.html')"><i class="fas fa-user-circle"></i>Account</div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const userKey = localStorage.getItem("userKey");
+
+        if(userKey) {
+            onValue(ref(db, 'users/' + userKey), (snapshot) => {
+                const data = snapshot.val();
+                if(data) {
+                    // ব্যান চেক
+                    if(data.isBanned) { 
+                        localStorage.removeItem("userKey"); 
+                        window.location.href = "login.html"; 
+                    }
+                    // ডাটা প্রদর্শন
+                    document.getElementById('uBal').innerText = '৳ ' + (parseFloat(data.balance || 0).toFixed(2));
+                    document.getElementById('uID').innerText = data.uid || "N/A";
+                }
+            });
+        } else {
+            window.location.href = "login.html";
+        }
+
+        window.goTo = (page) => { window.location.href = page; }
+        window.addEventListener('contextmenu', e => e.preventDefault(), false);
+    </script>
+</body>
+</html>
