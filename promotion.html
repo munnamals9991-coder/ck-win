@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Promotion - CK WIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; -webkit-tap-highlight-color: transparent !important; user-select: none; outline: none; }
+        body { background: #f4f5f8; padding-bottom: 80px; }
+        
+        /* Header & History Icon */
+        .promo-header { background: linear-gradient(180deg, #FFD700 0%, #000 100%); padding: 30px 15px; text-align: center; color: #FFD700; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: relative; }
+        .history-icon { position: absolute; top: 20px; right: 20px; font-size: 22px; color: #000; background: #FFD700; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #000; }
+        
+        .commission-box h2 { font-size: 26px; font-weight: 900; margin: 10px 0; color: #FFD700; }
+        .commission-box p { font-size: 12px; color: #fff; }
+
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; background: #fff; margin: -20px 15px 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #FFD700; }
+        .grid-header { background: #000; color: #FFD700; padding: 10px; text-align: center; font-size: 13px; font-weight: bold; }
+        .grid-item { padding: 12px; text-align: center; border: 0.5px solid #eee; }
+        .grid-item h4 { font-size: 16px; color: #000; font-weight: bold; }
+        .grid-item p { font-size: 10px; color: #666; }
+
+        .action-list { margin: 15px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
+        .action-item { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+        .action-item span { font-size: 14px; font-weight: bold; color: #444; display: flex; align-items: center; gap: 10px; }
+        .action-item i { color: #FFD700; font-size: 18px; }
+        .copy-info { font-size: 13px; color: #888; font-weight: normal; }
+        .copy-btn { background: #000; color: #FFD700; border: 1px solid #FFD700; padding: 5px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; }
+
+        /* Modal Style for History */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; }
+        .modal-content { background: #fff; width: 90%; max-height: 80vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
+        .modal-header { background: #FFD700; padding: 15px; text-align: center; font-weight: bold; font-size: 18px; position: relative; }
+        .close-modal { position: absolute; right: 15px; top: 15px; cursor: pointer; }
+        .history-list { padding: 10px; overflow-y: auto; flex-grow: 1; }
+        .history-card { background: #f9f9f9; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #FFD700; display: flex; justify-content: space-between; align-items: center; }
+        .h-info h5 { font-size: 14px; color: #000; }
+        .h-info p { font-size: 11px; color: #666; margin-top: 3px; }
+        .h-uid { font-size: 12px; font-weight: bold; color: #FFD700; background: #000; padding: 2px 8px; border-radius: 5px; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; height: 60px; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #FFD700; border-radius: 18px 18px 0 0; z-index: 1000; }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 11px; flex: 1; }
+        .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
+        .nav-link.active { color: #FFD700; }
+        .promo-btn-box { background: #FFD700; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid #000; color: #000 !important; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="promo-header">
+        <div class="history-icon" onclick="openHistory()"><i class="fas fa-history"></i></div>
+        <div class="commission-box">
+            <p>Yesterday's total commission</p>
+            <h2 id="yesterdayComm">৳ 0.00</h2>
+            <p>Invite friends to earn more commission</p>
+        </div>
+    </div>
+
+    <div class="data-grid">
+        <div class="grid-header">Direct subordinates</div>
+        <div class="grid-header" style="background: #333;">Team subordinates</div>
+        <div class="grid-item"><h4 id="d_reg">0</h4><p>register count</p></div>
+        <div class="grid-item"><h4 id="t_reg">0</h4><p>register count</p></div>
+        <div class="grid-item"><h4 id="d_dep">0</h4><p>deposit number</p></div>
+        <div class="grid-item"><h4 id="t_dep">0</h4><p>deposit number</p></div>
+    </div>
+
+    <div class="action-list">
+        <div class="action-item">
+            <span><i class="fas fa-user-tag"></i> Invitation code</span>
+            <span class="copy-info" id="invCode">...</span>
+            <button class="copy-btn" onclick="copyText('invCode')">Copy</button>
+        </div>
+        <div class="action-item">
+            <span><i class="fas fa-link"></i> Invitation link</span>
+            <button class="copy-btn" onclick="copyReferLink()">Copy Link</button>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                Referral History
+                <i class="fas fa-times close-modal" onclick="closeHistory()"></i>
+            </div>
+            <div class="history-list" id="historyList">
+                <p style="text-align:center; padding:20px; color:#999;">Loading history...</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-link" onclick="location.href='index.html'"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-link" onclick="location.href='activity.html'"><i class="fas fa-gift"></i>Activity</div>
+        <div class="nav-link active promo-btn-box" onclick="location.href='promotion.html'"><i class="fas fa-gem"></i>Promo</div>
+        <div class="nav-link" onclick="location.href='wallet.html'"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="nav-link" onclick="location.href='account.html'"><i class="fas fa-user-circle"></i>Account</div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue, query, orderByChild, equalTo, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const userKey = localStorage.getItem("userKey");
+        if(!userKey) location.href = "login.html";
+
+        let myUID = "";
+
+        // ইউজারের তথ্য ও প্রমোশন ডাটা লোড
+        onValue(ref(db, 'users/' + userKey), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                myUID = data.uid;
+                document.getElementById('invCode').innerText = myUID;
+                const promo = data.promotion || {};
+                document.getElementById('yesterdayComm').innerText = "৳ " + parseFloat(promo.commission || 0).toFixed(2);
+                document.getElementById('d_reg').innerText = promo.direct_reg || "0";
+                document.getElementById('t_reg').innerText = promo.team_reg || "0";
+                document.getElementById('d_dep').innerText = promo.direct_dep || "0";
+                document.getElementById('t_dep').innerText = promo.team_dep || "0";
+            }
+        });
+
+        // রেফার হিস্ট্রি দেখার ফাংশন
+        window.openHistory = async () => {
+            document.getElementById('historyModal').style.display = 'flex';
+            const listArea = document.getElementById('historyList');
+            listArea.innerHTML = '<p style="text-align:center; padding:20px;">Searching...</p>';
+
+            if(!myUID) return;
+
+            const usersRef = ref(db, 'users');
+            const q = query(usersRef, orderByChild('referrer'), equalTo(myUID.toString()));
+            
+            const snap = await get(q);
+            listArea.innerHTML = "";
+
+            if(snap.exists()){
+                snap.forEach(child => {
+                    const u = child.val();
+                    const date = u.joinDate ? new Date(u.joinDate).toLocaleDateString() : "N/A";
+                    listArea.innerHTML += `
+                        <div class="history-card">
+                            <div class="h-info">
+                                <h5>${u.loginID}</h5>
+                                <p><i class="far fa-calendar-alt"></i> ${date}</p>
+                            </div>
+                            <div class="h-uid">ID: ${u.uid}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                listArea.innerHTML = '<p style="text-align:center; padding:20px; color:#999;">No referrals found.</p>';
+            }
+        };
+
+        window.closeHistory = () => document.getElementById('historyModal').style.display = 'none';
+
+        window.copyText = (id) => {
+            navigator.clipboard.writeText(document.getElementById(id).innerText);
+            alert("Copied!");
+        };
+
+        window.copyReferLink = () => {
+            const link = window.location.origin + "/register.html?ref=" + myUID;
+            navigator.clipboard.writeText(link);
+            alert("Link Copied!");
+        };
+    </script>
+</body>
+</html>
