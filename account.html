@@ -2,82 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CK WIN - Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Account - CK WIN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* আপনার দেওয়া স্টাইল + কিছু নতুন ফিচার */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f8f9fd; padding-bottom: 100px; overflow-x: hidden; }
+        /* Activity.html এর স্টাইল হুবহু অনুসরণ করা হয়েছে */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; -webkit-tap-highlight-color: transparent !important; -webkit-touch-callout: none !important; user-select: none; outline: none; }
+        body { background: #f4f5f8; padding-bottom: 80px; }
 
-        .profile-header { background: #FFD700; padding: 50px 20px 80px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px; text-align: center; }
-        .avatar-box { position: relative; width: 100px; margin: 0 auto 15px; }
-        .avatar-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid #fff; background: #fff; }
-        .edit-badge { position: absolute; bottom: 5px; right: 5px; background: #000; color: #FFD700; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; cursor: pointer; }
+        /* হেডার ডিজাইন */
+        .profile-header { background: linear-gradient(180deg, #FFD700 0%, #000 100%); padding: 40px 15px 60px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+        .avatar-box { position: relative; width: 90px; margin: 0 auto 15px; }
+        .avatar-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #FFD700; background: #fff; object-fit: cover; }
+        .edit-badge { position: absolute; bottom: 0; right: 0; background: #FFD700; color: #000; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; cursor: pointer; font-size: 12px; }
 
-        .username-row { display: flex; align-items: center; justify-content: center; gap: 8px; color: #000; }
-        .username-row h2 { font-size: 24px; font-weight: 800; }
-        .uid-text { margin-top: 5px; font-weight: bold; color: #333; }
+        .username-row { display: flex; align-items: center; justify-content: center; gap: 8px; color: #FFD700; }
+        .username-row h2 { font-size: 20px; font-weight: 900; }
+        .uid-text { margin-top: 5px; font-size: 12px; color: #fff; background: rgba(255,255,255,0.1); display: inline-block; padding: 3px 12px; border-radius: 15px; }
 
-        .balance-container { background: #fff; margin: -50px 20px 20px; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
-        .balance-label { font-size: 14px; color: #888; text-transform: uppercase; }
-        .balance-amount { font-size: 38px; font-weight: 900; color: #000; margin: 10px 0; display: block; }
+        /* ব্যালেন্স বক্স */
+        .balance-container { background: #fff; margin: -30px 15px 20px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee; }
+        .balance-label { font-size: 13px; color: #888; margin-bottom: 5px; }
+        .balance-amount { font-size: 28px; font-weight: 900; color: #000; }
 
-        .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 0 20px 20px; }
-        .fin-btn { background: #000; color: #FFD700; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* বাটন গ্রিড */
+        .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px; }
+        .fin-btn { background: #000; color: #FFD700; padding: 12px; border-radius: 12px; text-align: center; font-weight: bold; cursor: pointer; border: 1px solid #FFD700; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
 
-        .menu-list { background: #fff; margin: 0 20px; border-radius: 20px; overflow: hidden; }
-        .menu-item { display: flex; align-items: center; padding: 18px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #f9f9f9; cursor: pointer; }
-        .menu-item i { width: 30px; color: #FFD700; font-size: 20px; }
-        .menu-item span { flex-grow: 1; font-weight: 600; }
+        /* মেনু লিস্ট */
+        .menu-list { background: #fff; margin: 0 15px; border-radius: 15px; overflow: hidden; border: 1px solid #eee; }
+        .menu-item { display: flex; align-items: center; padding: 15px 20px; text-decoration: none; color: #444; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: 0.3s; }
+        .menu-item:active { background: #f9f9f9; }
+        .menu-item i:first-child { width: 30px; color: #FFD700; font-size: 18px; }
+        .menu-item span { flex-grow: 1; font-weight: bold; font-size: 14px; }
+        .menu-item i:last-child { color: #ccc; font-size: 12px; }
 
         /* Modal Styles */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; }
-        .modal-card { background: #fff; width: 90%; max-width: 350px; padding: 25px; border-radius: 25px; text-align: center; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        .modal-card { background: #fff; width: 100%; max-width: 320px; padding: 20px; border-radius: 20px; text-align: center; }
+        .modal-card h3 { margin-bottom: 15px; font-size: 18px; }
         .btn-row { display: flex; gap: 10px; margin-top: 20px; }
-        .m-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; }
+        .m-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px; }
         
-        /* Avatar Grid */
         .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
         .avatar-opt { width: 100%; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-        .avatar-opt:hover { border-color: #FFD700; }
+        .avatar-opt:active { border-color: #FFD700; }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 10px 0; border-top: 2px solid #FFD700; border-radius: 18px 18px 0 0; z-index: 1000; height: 60px; align-items: center; }
-        .nav-item { text-align: center; color: #888; text-decoration: none; font-size: 11px; flex: 1; }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
-        .nav-item.active { color: #FFD700; }
-        .promo-btn { margin-top: -35px; width: 55px; height: 55px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 4px solid #000; color: #000; font-size: 20px; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4); }
+        /* Bottom Nav (Activity.html এর সাথে হুবহু এক) */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; height: 60px; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #FFD700; border-radius: 18px 18px 0 0; z-index: 1000; }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 11px; flex: 1; cursor: pointer; }
+        .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
+        .nav-link.active { color: #FFD700; }
+        .promo-btn-box { background: #FFD700; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid #000; color: #000 !important; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div class="profile-header">
         <div class="avatar-box">
-            <img src="" id="pfp" class="avatar-img">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="pfp" class="avatar-img">
             <div class="edit-badge" onclick="openModal('avatarModal')"><i class="fas fa-camera"></i></div>
         </div>
         <div class="username-row">
             <h2 id="uName">Loading...</h2>
-            <i class="fas fa-edit" onclick="openModal('nameModal')" style="cursor:pointer;"></i>
+            <i class="fas fa-edit" onclick="openModal('nameModal')" style="cursor:pointer; font-size: 14px;"></i>
         </div>
-        <p class="uid-text">UID: <span id="uID">...</span></p>
+        <div class="uid-text">UID: <span id="uID">...</span></div>
     </div>
 
     <div class="balance-container">
         <p class="balance-label">Total Asset Balance</p>
-        <span class="balance-amount" id="uBal">৳0.00</span>
+        <div class="balance-amount" id="uBal">৳ 0.00</div>
     </div>
 
     <div class="finance-grid">
-        <div class="fin-btn" onclick="location.href='recharge.html'"><i class="fas fa-plus-circle"></i> Deposit</div>
-        <div class="fin-btn" onclick="location.href='withdraw.html'"><i class="fas fa-wallet"></i> Withdraw</div>
+        <div class="fin-btn" onclick="goTo('recharge.html')"><i class="fas fa-plus-circle"></i> Deposit</div>
+        <div class="fin-btn" onclick="goTo('withdraw.html')"><i class="fas fa-wallet"></i> Withdraw</div>
     </div>
 
     <div class="menu-list">
-        <a href="change-password.html" class="menu-item"><i class="fas fa-lock"></i><span>Change Password</span><i class="fas fa-chevron-right"></i></a>
-        <a href="support.html" class="menu-item"><i class="fas fa-headset"></i><span>Customer Service</span><i class="fas fa-chevron-right"></i></a>
-        <div class="menu-item" onclick="openModal('logoutModal')"><i class="fas fa-sign-out-alt" style="color:red"></i><span style="color:red">Log Out</span></div>
+        <div class="menu-item" onclick="goTo('change-password.html')"><i class="fas fa-lock"></i><span>Change Password</span><i class="fas fa-chevron-right"></i></div>
+        <div class="menu-item" onclick="goTo('support.html')"><i class="fas fa-headset"></i><span>Customer Service</span><i class="fas fa-chevron-right"></i></div>
+        <div class="menu-item" onclick="openModal('logoutModal')"><i class="fas fa-sign-out-alt" style="color:#ff4d4d"></i><span style="color:#ff4d4d">Log Out</span></div>
     </div>
 
     <div id="avatarModal" class="modal">
@@ -91,7 +97,7 @@
     <div id="nameModal" class="modal">
         <div class="modal-card">
             <h3>Edit Name</h3>
-            <input type="text" id="newNameInput" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ddd; border-radius:5px;" placeholder="Enter new name">
+            <input type="text" id="newNameInput" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:10px;" placeholder="Enter new name">
             <div class="btn-row">
                 <button class="m-btn" style="background:#eee" onclick="closeModal('nameModal')">Cancel</button>
                 <button class="m-btn" style="background:#FFD700" onclick="updateName()">Save</button>
@@ -102,7 +108,7 @@
     <div id="logoutModal" class="modal">
         <div class="modal-card">
             <h3>Logout?</h3>
-            <p>Are you sure you want to exit?</p>
+            <p style="color:#666; font-size:14px;">Are you sure you want to exit?</p>
             <div class="btn-row">
                 <button class="m-btn" style="background:#eee" onclick="closeModal('logoutModal')">No</button>
                 <button class="m-btn" style="background:#FFD700" onclick="handleLogout()">Yes</button>
@@ -110,13 +116,13 @@
         </div>
     </div>
 
-    <div class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>Home</a>
-        <a href="activity.html" class="nav-item"><i class="fas fa-gift"></i>Activity</a>
-        <a href="promotion.html" class="nav-item"><div class="promo-btn"><i class="fas fa-gem"></i></div>Promo</a>
-        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i>Wallet</a>
-        <a href="account.html" class="nav-item active"><i class="fas fa-user-circle"></i>Account</a>
-    </div>
+    <nav class="bottom-nav">
+        <div class="nav-link" onclick="goTo('index.html')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-link" onclick="goTo('activity.html')"><i class="fas fa-gift"></i>Activity</div>
+        <div class="nav-link promo-btn-box" onclick="goTo('promotion.html')"><i class="fas fa-gem"></i>Promo</div>
+        <div class="nav-link" onclick="goTo('wallet.html')"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="nav-link active" onclick="goTo('account.html')"><i class="fas fa-user-circle"></i>Account</div>
+    </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -129,29 +135,24 @@
         const userKey = localStorage.getItem("userKey");
         if(!userKey) window.location.href = "login.html";
 
-        // ডাটা ফেচ করা
+        // ডাটাবেস থেকে তথ্য আনা
         onValue(ref(db, 'users/' + userKey), (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                if(data.isBanned) { handleLogout(); return; } // ব্যান থাকলে আউট
+                if(data.isBanned) { handleLogout(); return; }
                 
                 document.getElementById('uName').innerText = data.username || "User";
                 document.getElementById('uID').innerText = data.uid || "N/A";
-                document.getElementById('uBal').innerText = '৳' + parseFloat(data.balance || 0).toFixed(2);
+                document.getElementById('uBal').innerText = '৳ ' + parseFloat(data.balance || 0).toFixed(2);
                 document.getElementById('pfp').src = data.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix";
             }
         });
 
-        // অবতার জেনারেট
-        const avatars = [
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", "https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Max", "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoe",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Jack", "https://api.dicebear.com/7.x/avataaars/svg?seed=Bear",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo", "https://api.dicebear.com/7.x/avataaars/svg?seed=Lola"
-        ];
-        
+        // অবতার জেনারেটর
+        const avatars = ["Felix", "Aneka", "Max", "Zoe", "Jack", "Bear", "Leo", "Lola"];
         const avatarList = document.getElementById('avatarList');
-        avatars.forEach(url => {
+        avatars.forEach(seed => {
+            const url = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
             let img = document.createElement('img');
             img.src = url;
             img.className = 'avatar-opt';
@@ -162,14 +163,14 @@
             avatarList.appendChild(img);
         });
 
-        // গ্লোবাল ফাংশন
         window.openModal = (id) => document.getElementById(id).style.display = 'flex';
         window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+        window.goTo = (page) => { window.location.href = page; };
 
         window.updateName = () => {
             const name = document.getElementById('newNameInput').value;
-            if(name) {
-                update(ref(db, 'users/' + userKey), { username: name });
+            if(name.trim()) {
+                update(ref(db, 'users/' + userKey), { username: name.trim() });
                 closeModal('nameModal');
             }
         };
@@ -178,6 +179,8 @@
             localStorage.removeItem("userKey");
             window.location.href = "login.html";
         };
+
+        window.addEventListener('contextmenu', e => e.preventDefault(), false);
     </script>
 </body>
 </html>
