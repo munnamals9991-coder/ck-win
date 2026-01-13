@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CK WIN - Wingo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { background-color: #f7f8ff; padding-bottom: 70px; }
+
+        /* Header */
+        .header { background: #FFD700; padding: 15px; display: flex; align-items: center; justify-content: space-between; color: #000; }
+        .logo { font-size: 20px; font-weight: 900; font-style: italic; }
+        
+        /* Wallet Box */
+        .wallet-box { background: #fff; margin: 15px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .balance { font-size: 28px; font-weight: bold; margin: 10px 0; }
+        .btn-group { display: flex; gap: 15px; justify-content: center; margin-top: 15px; }
+        .btn-action { flex: 1; padding: 10px; border-radius: 20px; border: none; font-weight: bold; color: white; font-size: 14px; cursor: pointer; }
+        .btn-dep { background: #4caf50; box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3); }
+        .btn-wid { background: #f44336; box-shadow: 0 3px 10px rgba(244, 67, 54, 0.3); }
+
+        /* Announcement */
+        .notice-bar { background: #fff; margin: 0 15px; padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .notice-bar i { color: #FFD700; }
+
+        /* Game Timer Section */
+        .game-area { background: #fff; margin: 15px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; background-image: url('https://i.imgur.com/K3X6x3h.png'); background-size: cover; color: white; }
+        .time-left { text-align: center; }
+        .timer-digits { font-size: 30px; font-weight: bold; display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
+        .digit { background: #fff; color: #000; padding: 2px 6px; border-radius: 5px; }
+
+        /* Betting Colors */
+        .bet-colors { display: flex; gap: 10px; margin: 15px; }
+        .btn-color { flex: 1; padding: 12px; border: none; border-radius: 10px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 3px 5px rgba(0,0,0,0.2); }
+        .bg-green { background: #28a745; }
+        .bg-violet { background: #9c27b0; }
+        .bg-red { background: #dc3545; }
+
+        /* Number Grid */
+        .number-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 20px; }
+        .num-btn { background: #f0f0f0; border: none; padding: 10px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; position: relative; aspect-ratio: 1; }
+        .num-btn.n-green { background-image: url('https://img.icons8.com/emoji/48/green-circle-emoji.png'); background-size: cover; color: white; text-shadow: 0 1px 2px black; }
+        .num-btn.n-red { background-image: url('https://img.icons8.com/emoji/48/red-circle-emoji.png'); background-size: cover; color: white; text-shadow: 0 1px 2px black; }
+        .num-btn.n-violet { background-image: url('https://img.icons8.com/emoji/48/purple-circle-emoji.png'); background-size: cover; color: white; text-shadow: 0 1px 2px black; }
+
+        /* Big/Small Buttons */
+        .size-btns { display: flex; gap: 15px; margin: 0 15px 20px; }
+        .btn-size { flex: 1; padding: 12px; border-radius: 30px; border: none; color: white; font-weight: bold; font-size: 16px; text-transform: uppercase; cursor: pointer; }
+        .btn-big { background: linear-gradient(90deg, #FFA500 0%, #FF8C00 100%); }
+        .btn-small { background: linear-gradient(90deg, #6CA6CD 0%, #4682B4 100%); }
+
+        /* History Table */
+        .history-box { background: white; margin-top: 20px; border-radius: 20px 20px 0 0; min-height: 400px; padding: 15px; }
+        .ht-header { display: flex; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .ht-tab { flex: 1; text-align: center; font-weight: bold; color: #888; padding-bottom: 5px; }
+        .ht-tab.active { color: #000; border-bottom: 3px solid #FFD700; }
+        
+        .result-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .result-table th { color: #888; font-weight: normal; padding: 10px 5px; text-align: center; }
+        .result-table td { padding: 10px 5px; text-align: center; border-bottom: 1px solid #f5f5f5; font-weight: bold; color: #333; }
+        
+        /* Balls in History */
+        .res-ball { width: 20px; height: 20px; border-radius: 50%; display: inline-block; color: white; line-height: 20px; font-size: 10px; }
+        .b-green { background: #28a745; }
+        .b-red { background: #dc3545; }
+        .b-violet { background: #9c27b0; }
+        .b-mixed-g { background: linear-gradient(135deg, #28a745 50%, #9c27b0 50%); } /* Green+Violet */
+        .b-mixed-r { background: linear-gradient(135deg, #dc3545 50%, #9c27b0 50%); } /* Red+Violet */
+
+        /* Modal (Betting Popup) */
+        .modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-end; }
+        .modal-content { background: white; width: 100%; border-radius: 20px 20px 0 0; padding: 20px; animation: slideUp 0.3s; }
+        @keyframes slideUp { from {transform: translateY(100%);} to {transform: translateY(0);} }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; height: 60px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 50; }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 10px; flex: 1; }
+        .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
+        .nav-link.active { color: #FFD700; }
+        .mid-btn { background: #FFD700; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -25px; border: 4px solid #fff; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fas fa-chevron-left" onclick="location.href='index.html'"></i>
+        <div class="logo">CK WIN</div>
+        <div class="support"><i class="fas fa-headset"></i></div>
+    </div>
+
+    <div class="wallet-box">
+        <p style="color: #666; font-size: 14px;">Total Balance</p>
+        <div class="balance">৳ <span id="userBalance">0.00</span></div>
+        <div class="btn-group">
+            <button class="btn-action btn-dep" onclick="alert('Deposit Coming Soon!')">Deposit</button>
+            <button class="btn-action btn-wid" onclick="alert('Withdraw Coming Soon!')">Withdraw</button>
+        </div>
+    </div>
+
+    <div class="notice-bar">
+        <i class="fas fa-bullhorn"></i>
+        <marquee scrollamount="4">CK WIN: Welcome to the official Wingo Game! Win big prizes. Deposit and Withdraw features are coming very soon!</marquee>
+    </div>
+
+    <div class="game-area">
+        <div>
+            <div style="font-size: 14px; opacity: 0.9;"><i class="fas fa-clock"></i> Win Go 30S</div>
+            <div style="font-size: 20px; font-weight: bold; margin-top: 5px;" id="periodID">Loading...</div>
+        </div>
+        <div class="time-left">
+            <div style="font-size: 12px; margin-bottom: 5px;">Time Remaining</div>
+            <div class="timer-digits">
+                <div class="digit" id="t1">0</div>
+                <div class="digit" id="t2">3</div>
+                <div style="color:white">:</div>
+                <div class="digit" id="t3">0</div>
+                <div class="digit" id="t4">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bet-colors">
+        <button class="btn-color bg-green" onclick="openBet('Green')">Green</button>
+        <button class="btn-color bg-violet" onclick="openBet('Violet')">Violet</button>
+        <button class="btn-color bg-red" onclick="openBet('Red')">Red</button>
+    </div>
+
+    <div class="number-grid">
+        <button class="num-btn n-violet" onclick="openBet('0')">0</button>
+        <button class="num-btn n-green" onclick="openBet('1')">1</button>
+        <button class="num-btn n-red" onclick="openBet('2')">2</button>
+        <button class="num-btn n-green" onclick="openBet('3')">3</button>
+        <button class="num-btn n-red" onclick="openBet('4')">4</button>
+        <button class="num-btn n-violet" onclick="openBet('5')">5</button>
+        <button class="num-btn n-red" onclick="openBet('6')">6</button>
+        <button class="num-btn n-green" onclick="openBet('7')">7</button>
+        <button class="num-btn n-red" onclick="openBet('8')">8</button>
+        <button class="num-btn n-green" onclick="openBet('9')">9</button>
+    </div>
+
+    <div class="size-btns">
+        <button class="btn-size btn-big" onclick="openBet('Big')">Big</button>
+        <button class="btn-size btn-small" onclick="openBet('Small')">Small</button>
+    </div>
+
+    <div class="history-box">
+        <div class="ht-header">
+            <div class="ht-tab active">Game History</div>
+            <div class="ht-tab">Chart</div>
+            <div class="ht-tab">My History</div>
+        </div>
+        
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Number</th>
+                    <th>Big/Small</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody id="historyList">
+                <tr><td colspan="4">Loading history...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="betModal" class="modal">
+        <div class="modal-content">
+            <h3 id="betTarget" style="text-align: center; margin-bottom: 20px;">Join Green</h3>
+            <div style="text-align: center; padding: 20px;">
+                <p>Contract Money</p>
+                <div style="display: flex; gap: 10px; justify-content: center; margin: 10px 0;">
+                    <button style="padding: 5px 15px;">10</button>
+                    <button style="padding: 5px 15px;">100</button>
+                    <button style="padding: 5px 15px;">1000</button>
+                </div>
+                <button class="btn-action btn-dep" style="width: 100%; margin-top: 20px;" onclick="closeBet()">Confirm (Demo)</button>
+                <button class="btn-action btn-wid" style="width: 100%; margin-top: 10px; background: #666;" onclick="closeBet()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-link"><i class="fas fa-home"></i>Home</a>
+        <a href="activity.html" class="nav-link"><i class="fas fa-gift"></i>Activity</a>
+        <a href="promotion.html" class="nav-link"><i class="fas fa-gem"></i>Promo</a>
+        <a href="wallet.html" class="nav-link"><i class="fas fa-wallet"></i>Wallet</a>
+        <a href="account.html" class="nav-link"><i class="fas fa-user"></i>Account</a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Firebase Config (Replace with yours if different)
+        const firebaseConfig = {
+            databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- 1. Timer Logic (Client Side Sync) ---
+        function startTimer() {
+            setInterval(() => {
+                const now = new Date();
+                const seconds = now.getSeconds();
+                const remaining = 60 - seconds; // For 1 minute game logic, adjust for 30s if needed
+                
+                // যদি ৩০ সেকেন্ড গেম হয়:
+                const is30s = true; 
+                let displaySec = is30s ? (30 - (seconds % 30)) : remaining;
+                if(displaySec === 30) displaySec = 0;
+
+                const min = 0;
+                const sec = displaySec < 10 ? '0' + displaySec : displaySec;
+
+                document.getElementById('t3').innerText = String(sec).charAt(0);
+                document.getElementById('t4').innerText = String(sec).charAt(1);
+
+                // পিরিয়ড জেনারেটর (উদাহরণ)
+                const period = now.getFullYear()+""+(now.getMonth()+1)+""+now.getDate()+""+now.getHours()+""+now.getMinutes();
+                document.getElementById('periodID').innerText = period;
+
+            }, 1000);
+        }
+        startTimer();
+
+        // --- 2. Load History from Firebase ---
+        // পাইথন স্ক্রিপ্ট যেখানে ডাটা পাঠাচ্ছে: 'wingo_30s_results'
+        const historyRef = ref(db, 'wingo_30s_results/data/list'); // API structure অনুযায়ী 'data.list' হতে পারে
+
+        onValue(historyRef, (snapshot) => {
+            const data = snapshot.val();
+            const tableBody = document.getElementById('historyList');
+            tableBody.innerHTML = ""; // Clear old data
+
+            if (data) {
+                // ডাটা অ্যারেতে কনভার্ট করা (যদি অবজেক্ট আকারে আসে)
+                let games = Array.isArray(data) ? data : Object.values(data);
+                
+                // শেষ ৫০টা রেজাল্ট নেওয়া
+                games = games.slice(0, 50); 
+
+                games.forEach(game => {
+                    // কালার ডিটেকশন
+                    let colorClass = "b-red";
+                    let colorName = "";
+                    let num = parseInt(game.Number);
+
+                    if ([1, 3, 7, 9].includes(num)) {
+                        colorClass = "b-green";
+                        colorName = "Green";
+                    } else if ([2, 4, 6, 8].includes(num)) {
+                        colorClass = "b-red";
+                        colorName = "Red";
+                    } else if (num === 0) {
+                        colorClass = "b-mixed-r"; // Red + Violet
+                        colorName = "V+R";
+                    } else if (num === 5) {
+                        colorClass = "b-mixed-g"; // Green + Violet
+                        colorName = "V+G";
+                    }
+
+                    // বড়/ছোট ডিটেকশন
+                    let sizeText = num >= 5 ? "Big" : "Small";
+
+                    const row = `
+                        <tr>
+                            <td>${game.IssueNumber.slice(-4)}</td> <td><span class="res-ball ${colorClass}">${num}</span></td>
+                            <td>${sizeText}</td>
+                            <td>
+                                <div style="display:flex; gap:2px; justify-content:center;">
+                                    <div style="width:10px; height:10px; border-radius:50%; background:${colorName.includes('Green') ? 'green' : (colorName.includes('Red') ? 'red' : 'violet')}"></div>
+                                    ${colorName.includes('V') ? '<div style="width:10px; height:10px; border-radius:50%; background:#9c27b0;"></div>' : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>Waiting for new round...</td></tr>";
+            }
+        });
+
+        // --- UI Functions ---
+        window.openBet = (target) => {
+            document.getElementById('betModal').style.display = 'flex';
+            document.getElementById('betTarget').innerText = "Join " + target;
+            // কালার অনুযায়ী হেডারের রং বদলানো
+            let headerColor = target === 'Green' ? '#28a745' : (target === 'Red' ? '#dc3545' : '#9c27b0');
+            if(target === 'Big') headerColor = '#FFA500';
+            if(target === 'Small') headerColor = '#6CA6CD';
+            document.getElementById('betTarget').style.color = headerColor;
+        };
+
+        window.closeBet = () => {
+            document.getElementById('betModal').style.display = 'none';
+        };
+
+        // Modal close on click outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('betModal')) {
+                closeBet();
+            }
+        }
+    </script>
+</body>
+</html>
