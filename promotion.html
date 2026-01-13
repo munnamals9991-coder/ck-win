@@ -7,38 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Activity.html এর সাথে হুবহু মিল রাখা হয়েছে */
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; -webkit-tap-highlight-color: transparent !important; -webkit-touch-callout: none !important; user-select: none; outline: none; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; -webkit-tap-highlight-color: transparent !important; user-select: none; outline: none; }
         body { background: #f4f5f8; padding-bottom: 80px; }
         
-        .promo-header { 
-            background: linear-gradient(180deg, #FFD700 0%, #000 100%); 
-            padding: 40px 15px 60px; 
-            text-align: center; 
-            color: #FFD700; 
-            border-bottom-left-radius: 30px; 
-            border-bottom-right-radius: 30px; 
-            position: relative; 
-        }
-        
-        .history-icon { 
-            position: absolute; 
-            top: 20px; 
-            right: 20px; 
-            font-size: 18px; 
-            color: #000; 
-            background: #FFD700; 
-            width: 32px; 
-            height: 32px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            border: 2px solid #000;
-            z-index: 10;
-        }
-        
+        .promo-header { background: linear-gradient(180deg, #FFD700 0%, #000 100%); padding: 40px 15px 60px; text-align: center; color: #FFD700; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: relative; }
+        .history-icon { position: absolute; top: 20px; right: 20px; font-size: 18px; color: #000; background: #FFD700; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #000; z-index: 10; }
         .commission-box h2 { font-size: 26px; font-weight: 900; margin: 5px 0; color: #FFD700; }
         .commission-box p { font-size: 12px; color: #fff; }
 
@@ -50,25 +23,28 @@
 
         .action-list { margin: 15px; background: #fff; border-radius: 15px; border: 1px solid #eee; overflow: hidden; }
         .action-item { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f5f5; }
-        .action-item:last-child { border-bottom: none; }
         .action-item span { font-size: 13px; font-weight: bold; color: #333; display: flex; align-items: center; gap: 10px; }
         .action-item i { color: #FFD700; font-size: 16px; }
         .copy-info { font-size: 13px; color: #000; font-weight: 900; background: #f0f0f0; padding: 4px 10px; border-radius: 6px; }
         .copy-btn { background: #000; color: #FFD700; border: none; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; }
 
+        /* Toast Message Style */
+        #custom-toast { visibility: hidden; min-width: 120px; background-color: rgba(0,0,0,0.8); color: #fff; text-align: center; border-radius: 30px; padding: 10px; position: fixed; z-index: 20000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 13px; font-weight: bold; }
+        #custom-toast.show { visibility: visible; animation: fadeInOut 2.5s; }
+        @keyframes fadeInOut { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+
         /* Modal Style */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: #fff; width: 100%; max-width: 400px; max-height: 70vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; animation: slideUp 0.3s; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .modal-header { background: #FFD700; padding: 15px; text-align: center; font-weight: bold; font-size: 16px; color: #000; position: relative; }
         .close-modal { position: absolute; right: 15px; top: 15px; cursor: pointer; font-size: 18px; }
         .history-list { padding: 10px; overflow-y: auto; flex-grow: 1; background: #f8f9fa; }
-        .history-card { background: #fff; padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .h-info h5 { font-size: 13px; color: #333; }
-        .h-info p { font-size: 10px; color: #888; }
-        .h-uid { font-size: 10px; font-weight: bold; color: #fff; background: #000; padding: 2px 6px; border-radius: 4px; }
+        .history-card { background: #fff; padding: 12px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .h-info h5 { font-size: 14px; color: #000; }
+        .h-info p { font-size: 10px; color: #666; margin-top: 2px; }
+        .h-time { font-size: 9px; color: #999; margin-top: 2px; font-style: italic; }
 
-        /* Bottom Nav - Activity.html এর সাথে হুবহু মিল */
+        /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; height: 60px; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #FFD700; border-radius: 18px 18px 0 0; z-index: 1000; }
         .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 11px; flex: 1; cursor: pointer; }
         .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
@@ -77,6 +53,8 @@
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+    <div id="custom-toast">Copied!</div>
 
     <div class="promo-header">
         <div class="history-icon" onclick="openHistory()"><i class="fas fa-history"></i></div>
@@ -139,7 +117,6 @@
 
         let currentUID = "";
 
-        // ডাটা লোড
         onValue(ref(db, 'users/' + userKey), (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -149,7 +126,6 @@
                 }
                 currentUID = data.uid.toString();
                 document.getElementById('invCode').innerText = currentUID;
-                
                 const promo = data.promotion || {};
                 document.getElementById('yesterdayComm').innerText = "৳ " + parseFloat(promo.commission || 0).toFixed(2);
                 document.getElementById('d_reg').innerText = promo.direct_reg || "0";
@@ -159,7 +135,14 @@
             }
         });
 
-        // হিস্ট্রি ফাংশন
+        // টোস্ট মেসেজ ফাংশন
+        function showToast(msg) {
+            const toast = document.getElementById("custom-toast");
+            toast.innerText = msg;
+            toast.className = "show";
+            setTimeout(() => { toast.className = ""; }, 2500);
+        }
+
         window.openHistory = async () => {
             const listArea = document.getElementById('historyList');
             document.getElementById('historyModal').style.display = 'flex';
@@ -172,13 +155,16 @@
                 if(snap.exists()){
                     snap.forEach(child => {
                         const u = child.val();
+                        // ইউজার কখন অ্যাকাউন্ট খুলেছে তা ডাটাবেস থেকে নেওয়া (যদি createdAt না থাকে তবে 'Unknown Time')
+                        const time = u.createdAt ? u.createdAt : "New Member";
                         listArea.innerHTML += `
                             <div class="history-card">
                                 <div class="h-info">
                                     <h5>${u.loginID || u.phone}</h5>
-                                    <p>ID: ${u.uid}</p>
+                                    <p>UID: ${u.uid}</p>
+                                    <div class="h-time"><i class="far fa-clock"></i> ${time}</div>
                                 </div>
-                                <div class="h-uid">Active</div>
+                                <div style="font-size:10px; color:#28a745; font-weight:bold;">Active</div>
                             </div>`;
                     });
                 } else {
@@ -194,13 +180,13 @@
             const text = document.getElementById(id).innerText;
             if(text === "...") return;
             navigator.clipboard.writeText(text);
-            alert("Code Copied!");
+            showToast("Code Copied!");
         };
 
         window.copyReferLink = () => {
             const link = window.location.origin + "/register.html?ref=" + currentUID;
             navigator.clipboard.writeText(link);
-            alert("Link Copied!");
+            showToast("Link Copied!");
         };
     </script>
 </body>
