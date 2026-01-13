@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK WIN - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #121212; color: #fff; font-family: 'Roboto', sans-serif; padding: 10px; }
+        .container { max-width: 600px; margin: 0 auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #FFD700; display: none; }
+        
+        /* লগইন বক্স স্টাইল */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #121212; display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-box { background: #1e1e1e; padding: 30px; border-radius: 15px; border: 1px solid #FFD700; text-align: center; width: 300px; }
+        .login-box h3 { color: #FFD700; margin-bottom: 20px; }
+        .login-box input { width: 90%; padding: 12px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #444; background: #2d2d2d; color: white; text-align: center; }
+        
+        h2 { text-align: center; color: #FFD700; margin-bottom: 20px; font-size: 20px; text-transform: uppercase; }
+
+        .search-container { position: relative; margin-bottom: 20px; }
+        .search-container input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: 1px solid #FFD700; background: #2d2d2d; color: white; outline: none; box-sizing: border-box; }
+        .search-container i { position: absolute; right: 15px; top: 14px; color: #FFD700; cursor: pointer; }
+
+        .user-list { max-height: 300px; overflow-y: auto; background: #262626; border-radius: 10px; padding: 5px; margin-bottom: 20px; border: 1px solid #333; }
+        .user-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #333; cursor: pointer; transition: 0.3s; }
+        .user-item:hover { background: #333; }
+        .user-item span { font-size: 14px; }
+        .uid-tag { color: #FFD700; font-weight: bold; }
+
+        #result-area { display: none; background: #2d2d2d; padding: 15px; border-radius: 10px; border: 1px solid #444; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; border-bottom: 1px solid #383838; padding-bottom: 5px; }
+        .info-row b { color: #FFD700; }
+
+        .input-amt { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; background: #444; color: #fff; box-sizing: border-box; border: 1px solid #555; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        button { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; text-transform: uppercase; font-size: 12px; }
+        .btn-green { background: #28a745; color: white; }
+        .btn-red { background: #dc3545; color: white; }
+        .btn-blue { background: #007bff; color: white; }
+        .btn-yellow { background: #FFD700; color: #000; }
+        .btn-orange { background: #fd7e14; color: white; }
+        .btn-purple { background: #6f42c1; color: white; }
+        button:active { transform: scale(0.95); }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h3><i class="fas fa-lock"></i> ADMIN LOGIN</h3>
+            <input type="password" id="adminPass" placeholder="Enter Password">
+            <button class="btn-yellow" style="width:100%" onclick="checkLogin()">LOGIN</button>
+            <p id="loginErr" style="color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none;">Wrong Password!</p>
+        </div>
+    </div>
+
+    <div class="container" id="adminMain">
+        <h2><i class="fas fa-user-shield"></i> CK Admin Panel</h2>
+        
+        <div class="search-container">
+            <input type="number" id="searchUid" placeholder="Search by UID..." oninput="filterUsers()">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <div class="user-list" id="userList">
+            <p style="text-align:center; padding:10px; color:#888;">Connecting to database...</p>
+        </div>
+
+        <div id="result-area">
+            <h3 style="color: #FFD700; font-size: 16px; border-bottom: 1px solid #FFD700; padding-bottom: 5px;">User Controls</h3>
+            <div class="info-row"><span>Username:</span> <b id="u_name"></b></div>
+            <div class="info-row"><span>User UID:</span> <b id="u_uid" class="uid-tag"></b></div>
+            <div class="info-row"><span>Phone:</span> <b id="u_login"></b></div>
+            <div class="info-row"><span>Password:</span> <b id="u_pass" style="color: #007bff;"></b></div>
+            <div class="info-row"><span>Balance:</span> <b id="u_bal"></b></div>
+            <div class="info-row"><span>Status:</span> <b id="u_status"></b></div>
+
+            <input type="number" id="amount" class="input-amt" placeholder="Enter Amount (For Add/Cut)">
+            <div class="action-grid">
+                <button class="btn-green" onclick="updateMoney('add')">ADD MONEY</button>
+                <button class="btn-red" onclick="updateMoney('cut')">CUT MONEY</button>
+            </div>
+
+            <div style="margin-top: 15px; background: #333; padding: 10px; border-radius: 8px;">
+                <input type="text" id="newUserPass" class="input-amt" placeholder="Enter New Password for User">
+                <button class="btn-orange" style="width:100%" onclick="changeUserPass()">CHANGE USER PASS</button>
+            </div>
+
+            <div class="action-grid" style="margin-top: 10px;">
+                <button class="btn-red" id="banBtn" onclick="banUser(true)">BAN USER</button>
+                <button class="btn-blue" onclick="banUser(false)">UNBAN</button>
+            </div>
+
+            <hr style="border: 0.5px solid #444; margin: 20px 0;">
+
+            <h3 style="color: #FFD700; font-size: 14px;">Admin Settings</h3>
+            <input type="text" id="newAdminPassInput" class="input-amt" placeholder="New Admin Password">
+            <button class="btn-purple" style="width:100%" onclick="changeAdminPass()">CHANGE ADMIN PASS</button>
+
+            <button class="btn-yellow" style="width:100%; margin-top:20px;" onclick="closePanel()">CLOSE PANEL</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue, get, update, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        let currentUserPath = null;
+        let dbPassword = "";
+
+        // ১. অ্যাডমিন পাসওয়ার্ড লোড করা
+        const passRef = ref(db, 'adminConfig/password');
+        onValue(passRef, (snapshot) => {
+            if(snapshot.exists()){
+                dbPassword = snapshot.val();
+            } else {
+                set(passRef, "Munna123@");
+                dbPassword = "Munna123@";
+            }
+        });
+
+        // ২. লগইন চেক
+        window.checkLogin = () => {
+            const input = document.getElementById('adminPass').value;
+            if(input === dbPassword){
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('adminMain').style.display = 'block';
+                loadUsers();
+            } else {
+                document.getElementById('loginErr').style.display = 'block';
+                setTimeout(() => document.getElementById('loginErr').style.display = 'none', 2000);
+            }
+        };
+
+        // ৩. অ্যাডমিন পাসওয়ার্ড চেঞ্জ
+        window.changeAdminPass = () => {
+            const newP = document.getElementById('newAdminPassInput').value;
+            if(newP.length < 4) return alert("Password too short!");
+            if(confirm("Change Admin Password?")){
+                set(ref(db, 'adminConfig/password'), newP).then(() => {
+                    alert("Admin Password Changed!");
+                    document.getElementById('newAdminPassInput').value = "";
+                });
+            }
+        };
+
+        // ৪. ইউজারের পাসওয়ার্ড চেঞ্জ
+        window.changeUserPass = () => {
+            if(!currentUserPath) return;
+            const newUP = document.getElementById('newUserPass').value;
+            if(newUP.length < 4) return alert("Password too short!");
+            if(confirm("Change this user's password?")){
+                update(ref(db, currentUserPath), { password: newUP }).then(() => {
+                    alert("User Password Updated!");
+                    document.getElementById('u_pass').innerText = newUP;
+                    document.getElementById('newUserPass').value = "";
+                });
+            }
+        };
+
+        // ৫. সব ইউজার ডাটাবেজ থেকে লোড করা
+        function loadUsers() {
+            const usersRef = ref(db, 'users');
+            onValue(usersRef, (snapshot) => {
+                const listArea = document.getElementById('userList');
+                listArea.innerHTML = "";
+                const allUsers = snapshot.val();
+
+                if (allUsers) {
+                    Object.keys(allUsers).forEach(key => {
+                        const user = allUsers[key];
+                        const div = document.createElement('div');
+                        div.className = "user-item";
+                        div.innerHTML = `
+                            <span>${user.username || 'No Name'}</span>
+                            <span class="uid-tag">${user.uid}</span>
+                        `;
+                        div.onclick = () => selectUser(key, user);
+                        listArea.appendChild(div);
+                    });
+                } else {
+                    listArea.innerHTML = "<p style='text-align:center; padding:10px;'>No Users Found</p>";
+                }
+            });
+        }
+
+        window.selectUser = (key, data) => {
+            currentUserPath = 'users/' + key;
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('u_name').innerText = data.username || "Unknown";
+            document.getElementById('u_uid').innerText = data.uid;
+            document.getElementById('u_login').innerText = data.loginID || data.phone || "N/A";
+            document.getElementById('u_pass').innerText = data.password || "N/A";
+            document.getElementById('u_bal').innerText = "৳" + (data.balance || 0).toFixed(2);
+            
+            const statusElem = document.getElementById('u_status');
+            statusElem.innerText = data.isBanned ? "BANNED" : "ACTIVE";
+            statusElem.style.color = data.isBanned ? "#ff4d4d" : "#28a745";
+            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.filterUsers = () => {
+            const val = document.getElementById('searchUid').value.toString();
+            const items = document.querySelectorAll('.user-item');
+            items.forEach(item => {
+                const uid = item.querySelector('.uid-tag').innerText;
+                item.style.display = uid.includes(val) ? "flex" : "none";
+            });
+        };
+
+        window.updateMoney = (type) => {
+            if(!currentUserPath) return;
+            const amt = parseFloat(document.getElementById('amount').value);
+            if(isNaN(amt) || amt <= 0) return alert("Enter valid amount");
+
+            get(ref(db, currentUserPath)).then(snap => {
+                const curBal = parseFloat(snap.val().balance || 0);
+                const newBal = type === 'add' ? (curBal + amt) : (curBal - amt);
+                update(ref(db, currentUserPath), { balance: newBal }).then(() => {
+                    alert("Balance Updated!");
+                    document.getElementById('amount').value = "";
+                });
+            });
+        };
+
+        window.banUser = (status) => {
+            if(!currentUserPath) return;
+            update(ref(db, currentUserPath), { isBanned: status }).then(() => {
+                alert(status ? "User Banned!" : "User Activated!");
+            });
+        };
+
+        window.closePanel = () => {
+            document.getElementById('result-area').style.display = 'none';
+            currentUserPath = null;
+        };
+    </script>
+</body>
+</html>
