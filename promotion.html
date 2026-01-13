@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Promotion - CK WIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Activity.html এর সাথে হুবহু মিল রাখা হয়েছে */
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; -webkit-tap-highlight-color: transparent !important; -webkit-touch-callout: none !important; user-select: none; outline: none; }
+        body { background: #f4f5f8; padding-bottom: 80px; }
+        
+        .promo-header { 
+            background: linear-gradient(180deg, #FFD700 0%, #000 100%); 
+            padding: 40px 15px 60px; 
+            text-align: center; 
+            color: #FFD700; 
+            border-bottom-left-radius: 30px; 
+            border-bottom-right-radius: 30px; 
+            position: relative; 
+        }
+        
+        .history-icon { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-size: 18px; 
+            color: #000; 
+            background: #FFD700; 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            border: 2px solid #000;
+            z-index: 10;
+        }
+        
+        .commission-box h2 { font-size: 26px; font-weight: 900; margin: 5px 0; color: #FFD700; }
+        .commission-box p { font-size: 12px; color: #fff; }
+
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; background: #fff; margin: -25px 15px 15px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #eee; position: relative; z-index: 5; }
+        .grid-header { background: #000; color: #FFD700; padding: 10px; text-align: center; font-size: 12px; font-weight: bold; border-bottom: 1px solid #333; }
+        .grid-item { padding: 12px; text-align: center; border: 0.5px solid #f9f9f9; }
+        .grid-item h4 { font-size: 16px; color: #000; font-weight: bold; }
+        .grid-item p { font-size: 10px; color: #777; margin-top: 2px; }
+
+        .action-list { margin: 15px; background: #fff; border-radius: 15px; border: 1px solid #eee; overflow: hidden; }
+        .action-item { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f5f5; }
+        .action-item:last-child { border-bottom: none; }
+        .action-item span { font-size: 13px; font-weight: bold; color: #333; display: flex; align-items: center; gap: 10px; }
+        .action-item i { color: #FFD700; font-size: 16px; }
+        .copy-info { font-size: 13px; color: #000; font-weight: 900; background: #f0f0f0; padding: 4px 10px; border-radius: 6px; }
+        .copy-btn { background: #000; color: #FFD700; border: none; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; }
+
+        /* Modal Style */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #fff; width: 100%; max-width: 400px; max-height: 70vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header { background: #FFD700; padding: 15px; text-align: center; font-weight: bold; font-size: 16px; color: #000; position: relative; }
+        .close-modal { position: absolute; right: 15px; top: 15px; cursor: pointer; font-size: 18px; }
+        .history-list { padding: 10px; overflow-y: auto; flex-grow: 1; background: #f8f9fa; }
+        .history-card { background: #fff; padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .h-info h5 { font-size: 13px; color: #333; }
+        .h-info p { font-size: 10px; color: #888; }
+        .h-uid { font-size: 10px; font-weight: bold; color: #fff; background: #000; padding: 2px 6px; border-radius: 4px; }
+
+        /* Bottom Nav - Activity.html এর সাথে হুবহু মিল */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; height: 60px; display: flex; justify-content: space-around; align-items: center; border-top: 2px solid #FFD700; border-radius: 18px 18px 0 0; z-index: 1000; }
+        .nav-link { text-align: center; color: #888; text-decoration: none; font-size: 11px; flex: 1; cursor: pointer; }
+        .nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
+        .nav-link.active { color: #FFD700; }
+        .promo-btn-box { background: #FFD700; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid #000; color: #000 !important; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="promo-header">
+        <div class="history-icon" onclick="openHistory()"><i class="fas fa-history"></i></div>
+        <div class="commission-box">
+            <p>Yesterday's total commission</p>
+            <h2 id="yesterdayComm">৳ 0.00</h2>
+            <p>Invite friends to earn more commission</p>
+        </div>
+    </div>
+
+    <div class="data-grid">
+        <div class="grid-header">Direct subordinates</div>
+        <div class="grid-header" style="background: #333;">Team subordinates</div>
+        <div class="grid-item"><h4 id="d_reg">0</h4><p>register count</p></div>
+        <div class="grid-item"><h4 id="t_reg">0</h4><p>register count</p></div>
+        <div class="grid-item"><h4 id="d_dep">0</h4><p>deposit number</p></div>
+        <div class="grid-item"><h4 id="t_dep">0</h4><p>deposit number</p></div>
+    </div>
+
+    <div class="action-list">
+        <div class="action-item">
+            <span><i class="fas fa-user-tag"></i> Invitation code</span>
+            <span class="copy-info" id="invCode">...</span>
+            <button class="copy-btn" onclick="copyText('invCode')">Copy</button>
+        </div>
+        <div class="action-item">
+            <span><i class="fas fa-link"></i> Invitation link</span>
+            <button class="copy-btn" onclick="copyReferLink()">Copy Link</button>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                Referral History
+                <i class="fas fa-times close-modal" onclick="closeHistory()"></i>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-link" onclick="goTo('index.html')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-link" onclick="goTo('activity.html')"><i class="fas fa-gift"></i>Activity</div>
+        <div class="nav-link active promo-btn-box" onclick="goTo('promotion.html')"><i class="fas fa-gem"></i>Promo</div>
+        <div class="nav-link" onclick="goTo('wallet.html')"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="nav-link" onclick="goTo('account.html')"><i class="fas fa-user-circle"></i>Account</div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue, query, orderByChild, equalTo, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = { databaseURL: "https://ck-win-36ca8-default-rtdb.firebaseio.com" };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const userKey = localStorage.getItem("userKey");
+        if(!userKey) location.href = "login.html";
+
+        let currentUID = "";
+
+        // ডাটা লোড
+        onValue(ref(db, 'users/' + userKey), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if(data.isBanned) {
+                    localStorage.removeItem("userKey");
+                    location.href = "login.html";
+                }
+                currentUID = data.uid.toString();
+                document.getElementById('invCode').innerText = currentUID;
+                
+                const promo = data.promotion || {};
+                document.getElementById('yesterdayComm').innerText = "৳ " + parseFloat(promo.commission || 0).toFixed(2);
+                document.getElementById('d_reg').innerText = promo.direct_reg || "0";
+                document.getElementById('t_reg').innerText = promo.team_reg || "0";
+                document.getElementById('d_dep').innerText = promo.direct_dep || "0";
+                document.getElementById('t_dep').innerText = promo.team_dep || "0";
+            }
+        });
+
+        // হিস্ট্রি ফাংশন
+        window.openHistory = async () => {
+            const listArea = document.getElementById('historyList');
+            document.getElementById('historyModal').style.display = 'flex';
+            listArea.innerHTML = '<p style="text-align:center; padding:20px; font-size:12px;">Loading...</p>';
+
+            try {
+                const q = query(ref(db, 'users'), orderByChild('referrer'), equalTo(currentUID));
+                const snap = await get(q);
+                listArea.innerHTML = "";
+                if(snap.exists()){
+                    snap.forEach(child => {
+                        const u = child.val();
+                        listArea.innerHTML += `
+                            <div class="history-card">
+                                <div class="h-info">
+                                    <h5>${u.loginID || u.phone}</h5>
+                                    <p>ID: ${u.uid}</p>
+                                </div>
+                                <div class="h-uid">Active</div>
+                            </div>`;
+                    });
+                } else {
+                    listArea.innerHTML = '<p style="text-align:center; padding:30px; color:#999; font-size:12px;">No referrals found.</p>';
+                }
+            } catch (err) { listArea.innerHTML = '<p style="text-align:center; color:red;">Error!</p>'; }
+        };
+
+        window.closeHistory = () => document.getElementById('historyModal').style.display = 'none';
+        window.goTo = (page) => { window.location.href = page; }
+
+        window.copyText = (id) => {
+            const text = document.getElementById(id).innerText;
+            if(text === "...") return;
+            navigator.clipboard.writeText(text);
+            alert("Code Copied!");
+        };
+
+        window.copyReferLink = () => {
+            const link = window.location.origin + "/register.html?ref=" + currentUID;
+            navigator.clipboard.writeText(link);
+            alert("Link Copied!");
+        };
+    </script>
+</body>
+</html>
