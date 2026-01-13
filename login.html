@@ -6,7 +6,7 @@
     <title>CK WIN - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* [Source 84-124] - সেম ডিজাইন রাখা হয়েছে */
+        /* [Source 84-124] - ডিজাইন সেম রাখা হয়েছে */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #f7f8ff; }
         .header { background: #FFD700; padding: 20px; color: black; padding-bottom: 50px; text-align: center; }
@@ -26,7 +26,7 @@
         input { border: none; outline: none; width: 100%; font-size: 16px; color: #333; }
         .btn-submit { width: 100%; background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%); border: none; padding: 15px; border-radius: 30px; color: white; font-size: 18px; font-weight: bold; margin-top: 20px; box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3); cursor: pointer; transition: transform 0.1s; }
         .btn-submit:active { transform: scale(0.96); }
-        .btn-outline { width: 100%; background: white; border: 1px solid #FFA500; color: #FFA500; padding: 15px; border-radius: 30px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .btn-outline { width: 100%; background: white; border: 1px solid #FFA500; color: #FFA500; padding: 15px; border-radius: 30px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; text-align: center; display: block; text-decoration: none; }
         .form-content { display: none; }
         .form-content.active { display: block; animation: fadeEffect 0.5s; }
         @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
@@ -73,7 +73,7 @@
                 <div class="input-label"><i class="fas fa-lock"></i> Password</div>
                 <div class="input-box">
                     <input type="password" id="l_p_pass" placeholder="Password">
-                    <i class="fas fa-eye-slash" onclick="togglePass('l_p_pass', this)" style="color:#ccc"></i>
+                    <i class="fas fa-eye-slash" onclick="togglePass('l_p_pass', this)" style="color:#ccc; cursor:pointer;"></i>
                 </div>
              </div>
             <button class="btn-submit" onclick="handleLogin('phone')">Log in</button>
@@ -91,16 +91,16 @@
                 <div class="input-label"><i class="fas fa-lock"></i> Password</div>
                  <div class="input-box">
                     <input type="password" id="l_e_pass" placeholder="Password">
-                    <i class="fas fa-eye-slash" onclick="togglePass('l_e_pass', this)" style="color:#ccc"></i>
+                    <i class="fas fa-eye-slash" onclick="togglePass('l_e_pass', this)" style="color:#ccc; cursor:pointer;"></i>
                 </div>
             </div>
             <button class="btn-submit" onclick="handleLogin('email')">Log in</button>
-             <button class="btn-outline" onclick="location.href='register.html'">Register</button>
+            <button class="btn-outline" onclick="location.href='register.html'">Register</button>
         </div>
 
         <div class="support-link">
             <a href="support.html">
-               <i class="fas fa-headset"></i> Customer Service
+                <i class="fas fa-headset"></i> Customer Service
             </a>
         </div>
     </div>
@@ -115,6 +115,7 @@
     const app = initializeApp(firebaseConfig);
     const dbRef = ref(getDatabase(app));
 
+    // Tab Switching
     window.switchTab = (formId, tabElement) => {
         document.querySelectorAll('.form-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
@@ -122,17 +123,25 @@
         tabElement.classList.add('active');
     };
 
+    // Password Toggle
     window.togglePass = (inputId, icon) => {
         const input = document.getElementById(inputId);
-        input.type = input.type === "password" ? "text" : "password";
-        icon.classList.toggle("fa-eye");
-        icon.classList.toggle("fa-eye-slash");
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        }
     };
 
-    function showToast(message, code) {
+    // Toast Message
+    window.showToast = (message, code) => {
         var x = document.getElementById("custom-toast");
         if (code) {
-            x.innerHTML = `${message}<br><span class="error-code">Error Code: ${code}</span>`;
+            x.innerHTML = `${message}<br><span class="error-code">Code: ${code}</span>`;
         } else {
             x.innerHTML = message;
         }
@@ -140,25 +149,30 @@
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
+    // Login Logic
     window.handleLogin = (type) => {
         const id = type === 'phone' ? document.getElementById('l_phone').value : document.getElementById('l_email').value;
         const pass = type === 'phone' ? document.getElementById('l_p_pass').value : document.getElementById('l_e_pass').value;
         
-        if(!id || !pass) { showToast("Please fill all fields", 101); return; }
+        if(!id || !pass) { 
+            showToast("Please fill all fields", 101); 
+            return; 
+        }
 
+        // Create a safe key for Firebase
         const userId = id.replace(/[^a-zA-Z0-9]/g, "_");
         
         get(child(dbRef, `users/${userId}`)).then((snapshot) => {
             if (snapshot.exists()) {
                 const userData = snapshot.val();
                 
-                // ১. ব্যান চেক (Banned Check)
+                // 1. Check if Banned
                 if(userData.isBanned) {
                     showToast("Your Account is Banned!", 500);
                     return;
                 }
 
-                // ২. পাসওয়ার্ড চেক
+                // 2. Check Password
                 if (userData.password === pass) {
                     showToast("Login Successful! Redirecting...", 200);
                     localStorage.setItem("userKey", userId);
@@ -170,6 +184,7 @@
                 showToast("Account Not Found", 404);
             }
         }).catch((error) => {
+            console.error(error);
             showToast("Connection Failed", 500);
         });
     };
