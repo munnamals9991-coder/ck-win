@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TK-ZONE WINGO HACK OVERLAY</title>
+    <style>
+        body {
+            background-color: black;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Matrix Background */
+        canvas {
+            position: fixed; /* Fixed position for overlay */
+            top: 0;
+            left: 0;
+            z-index: -1; /* Matrix is behind everything */
+        }
+
+        /* Hacker Overlay Box */
+        .hack-overlay {
+            position: absolute;
+            top: 10%; /* Adjust as per your screenshot */
+            left: 5%;  /* Adjust as per your screenshot */
+            width: 90%; /* Adjust width */
+            background: rgba(0, 0, 0, 0.9); /* Semi-transparent background */
+            border: 2px solid #0f0;
+            padding: 10px;
+            box-shadow: 0 0 15px #0f0;
+            z-index: 10; /* Overlay on top of Wingo game */
+            text-align: center;
+        }
+
+        h1, h2, p {
+            margin: 5px 0;
+            color: #0f0;
+        }
+
+        .period-info {
+            font-size: 14px;
+            color: yellow;
+            margin-bottom: 10px;
+        }
+
+        .signal-result {
+            font-size: 40px;
+            font-weight: bold;
+            color: cyan; /* A distinct color for the result */
+            text-shadow: 0 0 10px cyan;
+        }
+
+        .control-buttons button {
+            background: #008000; /* Green buttons */
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .control-buttons button:hover {
+            background: #00ff00;
+        }
+        .control-buttons .exit-btn {
+            background: #8B0000; /* Dark Red for Exit */
+        }
+         .control-buttons .exit-btn:hover {
+            background: #FF0000;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="hack-overlay">
+        <p>[JEET] 🪚</p>
+        <h1 class="signal-result" id="hackResult">BIG 5</h1>
+        <p class="period-info">Game Period: <span id="gamePeriod">20250706100010452</span></p>
+        <div class="control-buttons">
+            <button class="exit-btn" onclick="hideOverlay()">EXIT</button>
+            <button onclick="changeSignal()">CHANGE</button>
+            <button onclick="hideOverlay()">HIDE</button>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Background Animation - Same as before
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "01"; // Only 0s and 1s for binary feel
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f0";
+            ctx.font = fontSize + "px arial";
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize * Math.random() > canvas.height && Math.random() > 0.9) drops[i] = 0; // Less frequent reset
+                drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 50); // Slower matrix for less distraction
+
+        // Hacker Overlay Logic
+        const hackResult = document.getElementById('hackResult');
+        const gamePeriod = document.getElementById('gamePeriod');
+        const overlay = document.querySelector('.hack-overlay');
+
+        function generateRandomSignal() {
+            const signals = ["BIG 5", "SMALL 0", "BIG 9", "SMALL 2", "RED 7", "GREEN 3"];
+            const period = new Date().getFullYear() + String(Math.floor(Math.random() * 1000000000000)).padStart(12, '0');
+            
+            hackResult.innerText = signals[Math.floor(Math.random() * signals.length)];
+            gamePeriod.innerText = period;
+        }
+
+        // Initial signal on load
+        generateRandomSignal();
+
+        function changeSignal() {
+            generateRandomSignal();
+        }
+
+        function hideOverlay() {
+            // This will make the overlay disappear
+            overlay.style.display = 'none';
+            // If you want to show it again, you can have another button outside the overlay
+            // or refresh the page.
+        }
+
+        // If you want to show it back with a separate button:
+        // function showOverlay() {
+        //     overlay.style.display = 'block';
+        // }
+    </script>
+</body>
+</html>
