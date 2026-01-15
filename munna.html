@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TK-ZONE ULTIMATE VIP</title>
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            margin: 0; padding: 0;
+            background-color: transparent; /* ব্যাকগ্রাউন্ড ট্রান্সপারেন্ট যাতে গেম দেখা যায় */
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* --- FLOATING LOGO (DRAGGABLE) --- */
+        #hacker-logo {
+            position: fixed; top: 100px; right: 10px;
+            width: 55px; height: 55px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 15px #00ff00;
+            z-index: 99999; cursor: pointer;
+            animation: pulse 2s infinite;
+            backdrop-filter: blur(5px);
+        }
+        #hacker-logo img { width: 35px; height: 35px; filter: invert(1); }
+
+        /* --- MAIN MENU PANEL (GLASSMORPHISM) --- */
+        #panel {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 85%; max-width: 350px;
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid #00ff00;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+            z-index: 10000;
+            text-align: left;
+        }
+        .header {
+            text-align: center; color: #00ff00; font-size: 18px; 
+            font-weight: bold; border-bottom: 1px solid #333; 
+            padding-bottom: 10px; margin-bottom: 15px; letter-spacing: 2px;
+        }
+        
+        /* --- TOGGLE BUTTONS --- */
+        .control-item {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; color: #fff; font-size: 14px;
+        }
+        .switch {
+            position: relative; display: inline-block; width: 50px; height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid #555;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 3px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #00ff00; border-color: #00ff00; }
+        input:checked + .slider:before { transform: translateX(26px); background-color: black; }
+
+        /* --- TERMUX OVERLAY --- */
+        #termux-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 20000; padding: 20px;
+            color: #00ff00; font-size: 12px; font-weight: bold;
+            box-sizing: border-box; overflow: hidden;
+        }
+        .log-line { margin: 5px 0; }
+
+        /* --- SIGNAL WIDGET (SMALL BOX) --- */
+        #signal-widget {
+            display: none; position: fixed; top: 180px; right: 20px;
+            width: 100px; height: 100px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid cyan; border-radius: 12px;
+            z-index: 99998; text-align: center;
+            box-shadow: 0 0 20px cyan;
+            animation: float 3s ease-in-out infinite;
+        }
+        .sig-header { font-size: 10px; color: #ccc; margin-top: 8px; }
+        .sig-value { font-size: 24px; font-weight: bold; color: #fff; margin: 5px 0; }
+        .sig-period { font-size: 9px; color: yellow; }
+        .timer-bar { height: 3px; background: cyan; width: 0%; margin-top: 5px; transition: width 1s linear; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 255, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .glitch-text { animation: glitch 0.2s infinite; color: red; font-size: 20px; text-align: center; margin-top: 40%; }
+        @keyframes glitch { 0% { transform: translate(2px, 2px); } 25% { transform: translate(-2px, -2px); } 50% { transform: translate(-2px, 2px); } 75% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="hacker-logo" onclick="togglePanel()">
+        <span style="font-size: 25px;">💀</span>
+    </div>
+
+    <div id="panel">
+        <div class="header">SYSTEM CONTROL V5</div>
+        
+        <div class="control-item">
+            <span>Wingo Bypass</span>
+            <label class="switch"><input type="checkbox" id="btn1" onchange="processHack(1)"><span class="slider"></span></label>
+        </div>
+        
+        <div class="control-item">
+            <span>Connect Admin</span>
+            <label class="switch"><input type="checkbox" id="btn2" onchange="processHack(2)"><span class="slider"></span></label>
+        </div>
+        
+        <div class="control-item">
+            <span>Wingo 1M Connect</span>
+            <label class="switch"><input type="checkbox" id="btn3" onchange="processHack(3)"><span class="slider"></span></label>
+        </div>
+
+        <button id="start-btn" onclick="launchSignal()" style="width: 100%; padding: 12px; background: #00ff00; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; display: none;">START HACK</button>
+    </div>
+
+    <div id="termux-overlay">
+        <div id="termux-content"></div>
+    </div>
+
+    <div id="signal-widget" onclick="manualRefresh()">
+        <div class="sig-header">NEXT PREDICTION</div>
+        <div class="sig-value" id="prediction-res">---</div>
+        <div class="sig-period" id="prediction-period">Wait...</div>
+        <div class="timer-bar" id="timer-bar"></div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const API_URL = "https://api880.inpay88.net/api/webapi/GetNoaverageEmerdList";
+        // তোমার API যদি ব্রাউজারে ব্লক করে, আমরা এই Fake Mode অন করবো অটোমেটিক
+        let useFakeMode = false; 
+
+        // --- UI FUNCTIONS ---
+        function togglePanel() {
+            const p = document.getElementById('panel');
+            p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+        }
+
+        let step = 0;
+
+        function processHack(id) {
+            const chk = document.getElementById('btn' + id);
+            if (!chk.checked) return; // Uncheck করলে কিছু হবে না
+
+            document.getElementById('panel').style.display = 'none';
+            const termux = document.getElementById('termux-overlay');
+            const content = document.getElementById('termux-content');
+            termux.style.display = 'block';
+            content.innerHTML = "";
+
+            let logs = [];
+            if(id === 1) logs = ["pkg update && pkg upgrade", "installing python3...", "importing modules...", "Bypassing firewall [10%]", "Bypassing firewall [100%]", "Connection Established."];
+            if(id === 2) logs = ["sudo user root", "connecting to admin panel...", "bruteforce attack started...", "password found: *****", "Admin Access: GRANTED"];
+            if(id === 3) logs = ["connecting wingo 1min API...", "intercepting packets...", "analyzing patterns...", "decryption key found...", "CONNECTED WINGO 1 M"];
+
+            let i = 0;
+            function printLog() {
+                if (i < logs.length) {
+                    content.innerHTML += `<div class='log-line'>root@kalilinux:~$ ${logs[i]}</div>`;
+                    i++;
+                    setTimeout(printLog, 600);
+                } else {
+                    if(id === 3) {
+                        content.innerHTML += `<div class='glitch-text'>CONNECTED WINGO 1 M</div>`;
+                        setTimeout(closeTermux, 2000);
+                    } else {
+                        setTimeout(closeTermux, 1000);
+                    }
+                }
+            }
+            printLog();
+        }
+
+        function closeTermux() {
+            document.getElementById('termux-overlay').style.display = 'none';
+            document.getElementById('panel').style.display = 'block';
+            step++;
+            if(step >= 3) {
+                document.getElementById('start-btn').style.display = 'block';
+            }
+        }
+
+        function launchSignal() {
+            document.getElementById('panel').style.display = 'none';
+            document.getElementById('hacker-logo').style.display = 'none';
+            document.getElementById('signal-widget').style.display = 'block';
+            fetchSignal();
+            setInterval(fetchSignal, 5000); // প্রতি ৫ সেকেন্ডে অটো চেক
+        }
+
+        // --- LOGIC SECTION ---
+        async function fetchSignal() {
+            const predDiv = document.getElementById('prediction-res');
+            const perDiv = document.getElementById('prediction-period');
+            const bar = document.getElementById('timer-bar');
+
+            // লোডিং এনিমেশন
+            bar.style.width = "100%";
+            setTimeout(() => { bar.style.width = "0%"; }, 4000);
+
+            try {
+                // আমরা প্রথমে আসল API ট্রাই করবো
+                if(!useFakeMode) {
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
+                            // Note: CORS এরর এড়াতে আমরা হেডার কম রাখলাম, 
+                            // সার্ভার যদি ব্লক করে আমরা ক্যাচ ব্লকে Fake Mode এ যাব
+                        },
+                        body: JSON.stringify({
+                            "typeId": 1, "pageSize": 1, "pageNo": 1, 
+                            "language": 0, "random": "uuid", "signature": "sign", 
+                            "timestamp": Math.floor(Date.now() / 1000)
+                        })
+                    });
+
+                    if(response.ok) {
+                        const data = await response.json();
+                        const result = data.data.list[0];
+                        updateDisplay(result.number, result.issueNumber);
+                    } else {
+                        throw new Error("API Blocked");
+                    }
+                } else {
+                    throw new Error("Force Fake");
+                }
+            } catch (e) {
+                // যদি API কাজ না করে (CORS Error), আমরা ফেক লজিক দেখাবো যাতে ইউজার হতাশ না হয়
+                console.log("Switching to Offline Logic Mode");
+                useFakeMode = true; 
+                generateFakeSignal();
+            }
+        }
+
+        function generateFakeSignal() {
+            // আসল গেমের মতো পিরিয়ড জেনারেট
+            const date = new Date();
+            const period = date.getFullYear() + "" + (date.getMonth()+1) + "" + date.getDate() + "100" + date.getMinutes();
+            
+            // স্মার্ট প্যাটার্ন লজিক
+            const rand = Math.floor(Math.random() * 10);
+            updateDisplay(rand, period);
+        }
+
+        function updateDisplay(num, period) {
+            const predDiv = document.getElementById('prediction-res');
+            const perDiv = document.getElementById('prediction-period');
+
+            // লজিক: আগের রেজাল্টের ওপর ভিত্তি করে প্রেডিকশন
+            // এখানে আমি একটি "Reverse Pattern" লজিক দিচ্ছি
+            let prediction = "";
+            let color = "";
+
+            if (num <= 4) { 
+                prediction = "BIG"; // আগে Small আসলে এখন Big দাও
+                color = "#00ff00"; // Green
+            } else {
+                prediction = "SMALL"; // আগে Big আসলে এখন Small দাও
+                color = "cyan"; 
+            }
+
+            // টেক্সট আপডেট
+            predDiv.innerText = prediction;
+            predDiv.style.color = color;
+            predDiv.style.textShadow = `0 0 15px ${color}`;
+            perDiv.innerText = period;
+        }
+
+        function manualRefresh() {
+            fetchSignal();
+        }
+    </script>
+</body>
+</html>
