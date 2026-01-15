@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TK-ZONE WINGO HACKER</title>
+    <style>
+        body {
+            background-color: black;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #0f0;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px #0f0;
+            width: 300px;
+            z-index: 10;
+        }
+
+        input {
+            background: black;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            margin: 10px 0;
+            width: 90%;
+            outline: none;
+        }
+
+        button {
+            background: #0f0;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .hidden { display: none; }
+        
+        .status { font-size: 12px; margin-top: 10px; color: yellow; }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div id="login" class="container">
+        <h2>SYSTEM LOCKED</h2>
+        <p>ENTER ACTIVATION KEY</p>
+        <input type="password" id="key" placeholder="Key here...">
+        <button onclick="checkKey()">ACTIVATE</button>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <div id="menu" class="container hidden">
+        <h2>HACKER PANEL</h2>
+        <button onclick="showSignal()">START SIGNAL HACK</button>
+        <br><br>
+        <button onclick="showBypass()">BYPASS SERVER</button>
+    </div>
+
+    <div id="signal" class="container hidden">
+        <h2>SIGNAL HACK</h2>
+        <input type="number" id="period" placeholder="Enter Period...">
+        <button onclick="generateSignal()">GENERATE</button>
+        <h1 id="result">??</h1>
+        <button onclick="goBack()" style="background: gray;">BACK</button>
+    </div>
+
+    <div id="bypass" class="container hidden">
+        <h2>BYPASSING...</h2>
+        <div id="progress">Progress: 0%</div>
+        <div class="status" id="log">Connecting to server...</div>
+        <br>
+        <button onclick="goBack()" style="background: gray;">STOP</button>
+    </div>
+
+    <audio id="hackerMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Matrix Background Animation
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0f0";
+            ctx.font = fontSize + "px arial";
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 33);
+
+        // App Logic
+        function checkKey() {
+            const key = document.getElementById('key').value;
+            if (key === "admin786") { // তোমার পাসওয়ার্ড
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('menu').classList.remove('hidden');
+                document.getElementById('hackerMusic').play();
+            } else {
+                document.getElementById('error').innerText = "ACCESS DENIED!";
+            }
+        }
+
+        function showSignal() {
+            document.getElementById('menu').classList.add('hidden');
+            document.getElementById('signal').classList.remove('hidden');
+        }
+
+        function generateSignal() {
+            const results = ["BIG", "SMALL", "RED", "GREEN"];
+            document.getElementById('result').innerText = results[Math.floor(Math.random() * results.length)];
+        }
+
+        function showBypass() {
+            document.getElementById('menu').classList.add('hidden');
+            document.getElementById('bypass').classList.remove('hidden');
+            let i = 0;
+            const log = document.getElementById('log');
+            const progress = document.getElementById('progress');
+            const logs = ["Searching DB...", "Proxy Connected...", "Bypassing Firewall...", "Access Granted!"];
+            
+            const interval = setInterval(() => {
+                i += 10;
+                progress.innerText = "Progress: " + i + "%";
+                log.innerText = logs[Math.floor(i/30)];
+                if (i >= 100) clearInterval(interval);
+            }, 500);
+        }
+
+        function goBack() {
+            document.getElementById('signal').classList.add('hidden');
+            document.getElementById('bypass').classList.add('hidden');
+            document.getElementById('menu').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
